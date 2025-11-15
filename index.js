@@ -10,7 +10,7 @@ let moreRowsIndex = 0;
 while (moreRows !== true) {
 	moreRowsIndex++;
 	aBadges.push(document.getElementById(`row${moreRowsIndex.toString()}`));
-	if (!!aBadges[moreRowsIndex]) {
+	if (!!aBadges[moreRowsIndex-1]) {
 		aBadges.pop();
 		moreRows = !moreRows;
 	}
@@ -31,11 +31,11 @@ let iLinks = [
 	}
 ];
 
-iLinks = { ...iLinks, ...iLinks }
-iLinks = { ...iLinks, ...iLinks }
-iLinks = { ...iLinks, ...iLinks }
-iLinks = { ...iLinks, ...iLinks }
-iLinks = { ...iLinks, ...iLinks }
+iLinks = [ ...iLinks, ...iLinks ]
+iLinks = [ ...iLinks, ...iLinks ]
+iLinks = [ ...iLinks, ...iLinks ]
+iLinks = [ ...iLinks, ...iLinks ]
+iLinks = [ ...iLinks, ...iLinks ]
 
 
 for (const i in hHas) {
