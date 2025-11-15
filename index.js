@@ -10,7 +10,7 @@ let moreRowsIndex = 0;
 while (moreRows !== true) {
 	moreRowsIndex++;
 	aBadges.push(document.getElementById(`row${moreRowsIndex.toString()}`));
-	if (!!aBadges[moreRowsIndex-1]) {
+	if (!aBadges[moreRowsIndex-1]) {
 		aBadges.pop();
 		moreRows = !moreRows;
 	}
@@ -43,6 +43,8 @@ for (const i in hHas) {
 	badge.text = hHas[i];
 	hBadges.appendChild(badge);
 }
+
+console.log(aBadges);
 
 iLinks.forEach((iLink, index) => {
 	const badge = document.createElement("a-badge");

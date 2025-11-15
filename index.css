@@ -54,7 +54,7 @@ main {
 	flex: 1;
 }
 
-#h-badges > div {
+#h-badges {
 	display: flex;
 	justify-content: center;
 	gap: 0.5rem;
@@ -62,7 +62,15 @@ main {
 
 #a-badges {
 	display: flex;
+	flex-direction: column;
+	height: 62px;
+	gap: 2px;
+}
+
+#a-badges > div {
+	display: flex;
 	justify-content: center;
-	gap: 0.5rem;
-	height: 64px;
+	flex-wrap: wrap;
+	gap: 2px;
+	height: 31px;
 }
