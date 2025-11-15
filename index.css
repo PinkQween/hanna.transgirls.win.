@@ -1,0 +1,68 @@
+:root {
+	--trans-pink: #F5A9B8;
+	--trans-blue: #5BCEFA;
+/*	--trans-blue-top: --trans-blue, 0, 20%;
+	--trans-pink-top: --trans-pink, 20%, 40%;
+	--trans-middle: #fff, 40%, 60%;
+	--trans-pink-bottom: --trans-pink, 60%, 80%;
+	--trans-blue-bottom: --trans-blue, 80%, 100%;
+	this code is invalid but I'm too lazy to delete.
+ */
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	color: #eee;
+}
+
+body {
+	background-color: #333;
+}
+
+a {
+	text-decoration: underline;
+}
+
+.container {
+	max-width: max(75vw, 36rem);
+	margin: 0 auto;
+	text-align: center
+}
+
+.max {
+	/* background-color: #ff0000; */
+	min-height: calc(100dvh - 64px);
+	padding: 3rem;
+	display: flex;
+	flex-direction: column;
+}
+
+
+.name {
+	background: linear-gradient(to bottom, var(--trans-blue) 0 30%, var(--trans-pink) 30% 45%, #fff 45% 55%, var(--trans-pink) 55% 70%, var(--trans-blue) 70% 100%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	margin: 0 auto;
+	font-size: 4em;
+	color: transparent;
+	-webkit-text-fill-color: transparent;
+}
+
+main {
+	flex: 1;
+}
+
+#h-badges > div {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+#a-badges {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+	height: 64px;
+}
