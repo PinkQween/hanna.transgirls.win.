@@ -32,7 +32,7 @@ class ABadge extends HTMLElement {
 		}
 		if (dest) {
 			this._img.alt = dest;
-			this.root.onclick = this.setOnClick(dest);
+			this._img.onclick = this.setOnClick(dest);
 		}
 	}
 
@@ -47,7 +47,7 @@ class ABadge extends HTMLElement {
 			this._img.src = v;
 		} else if (attr === "dest") {
 			this._img.alt = v;
-			this.root.onclick = this.setOnClick(v);
+			this._img.onclick = this.setOnClick(v);
 		}
 	}
 

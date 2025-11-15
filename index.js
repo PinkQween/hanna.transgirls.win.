@@ -28,15 +28,28 @@ let iLinks = [
 	{
 		img: "https://transgirls.win/assets/media/transgirlsdark3.gif",
 		dest: "https://transgirls.win"
+	},
+	{
+		img: "/assets/rain.gif",
+		dest: "/rain"
+	},
+	{
+		img: "/assets/contact.gif",
+		dest: "https://hannaskairipa.com/#contact"
+	},
+	{
+		img: "https://cyber.dabamos.de/88x31/transnow2.gif",
+		dest: "#"
+	},
+	{
+		img: "/assets/cloudflare.gif",
+		dest: "/admin"
+	},
+	{
+		img: "https://cyber.dabamos.de/88x31/miku.gif",
+		dest: ""
 	}
 ];
-
-iLinks = [ ...iLinks, ...iLinks ]
-iLinks = [ ...iLinks, ...iLinks ]
-iLinks = [ ...iLinks, ...iLinks ]
-iLinks = [ ...iLinks, ...iLinks ]
-iLinks = [ ...iLinks, ...iLinks ]
-
 
 for (const i in hHas) {
 	const badge = document.createElement("h-badge");
