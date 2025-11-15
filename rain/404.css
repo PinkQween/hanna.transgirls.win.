@@ -13,7 +13,7 @@ body {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.85);
+	background: rgba(0, 0, 0, 0.3);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -34,18 +34,20 @@ body {
 	border: 2px solid #444;
 	backdrop-filter: blur(10px);
 	max-width: 500px;
+	position: relative;
+	min-height: 400px;
 }
 
 .error-code {
-	color: #5BCEFA;
+	color: #F7A8B8;
 	font-size: 6rem;
 	font-weight: bold;
 	margin-bottom: 0.5rem;
-	text-shadow: 0 0 20px rgba(91, 206, 250, 0.5);
+	text-shadow: 0 0 20px rgba(247, 168, 184, 0.5);
 }
 
 .error-message {
-	color: #F7A8B8;
+	color: #5BCEFA;
 	font-size: 2rem;
 	margin-bottom: 1rem;
 	text-transform: lowercase;

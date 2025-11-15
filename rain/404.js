@@ -71,16 +71,70 @@ const init = () => {
 	thunderSound = new Audio('/rain/thunder.mp3');
 	thunderSound.volume = 1;
 
-	// Start audio immediately when page loads (let user listen to rain)
-	initAudio();
-
 	const overlay = document.getElementById('overlay');
 	const homeBtn = document.getElementById('homeBtn');
+	let clickCount = 0;
+	let currentX = null;
+	let currentY = null;
+	let audioStarted = false;
 
-	// Handle button click to go home
-	homeBtn.addEventListener('click', () => {
-		// Redirect to home page
-		window.location.href = '/';
+	// Handle button click - move 2 times, go home on 3rd click
+	homeBtn.addEventListener('click', (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		// Start audio on first interaction
+		if (!audioStarted) {
+			initAudio();
+			audioStarted = true;
+		}
+
+		clickCount++;
+
+		if (clickCount <= 2) {
+			// Move button to random position with minimum distance
+			const popup = homeBtn.parentElement;
+			const popupRect = popup.getBoundingClientRect();
+			const minDistance = window.innerWidth * 0.1; // 10vw in pixels
+
+			// Get current position
+			if (currentX === null) {
+				const btnRect = homeBtn.getBoundingClientRect();
+				currentX = btnRect.left - popupRect.left;
+				currentY = btnRect.top - popupRect.top;
+			}
+
+			let randomX, randomY, distance;
+			let attempts = 0;
+
+			// Try to find a position at least 10vw away
+			do {
+				const maxX = popupRect.width - homeBtn.offsetWidth - 40;
+				const maxY = popupRect.height - homeBtn.offsetHeight - 40;
+
+				randomX = Math.random() * maxX;
+				randomY = Math.random() * maxY;
+
+				// Calculate distance from current position
+				const dx = randomX - currentX;
+				const dy = randomY - currentY;
+				distance = Math.sqrt(dx * dx + dy * dy);
+
+				attempts++;
+			} while (distance < minDistance && attempts < 50);
+
+			// Update position
+			currentX = randomX;
+			currentY = randomY;
+
+			homeBtn.style.position = 'absolute';
+			homeBtn.style.left = randomX + 'px';
+			homeBtn.style.top = randomY + 'px';
+			homeBtn.style.transition = 'all 0.3s ease';
+		} else {
+			// Third click - go home
+			window.location.href = '/';
+		}
 	});
 
 	scene = new THREE.Scene();
@@ -213,7 +267,7 @@ const animate = () => {
 		const currentTime = Date.now();
 		const timeSinceLastThunder = currentTime - lastThunderTime;
 
-		if (Math.random() > 0.96 && timeSinceLastThunder >= minThunderInterval) {
+		if (Math.random() > 0.996 && timeSinceLastThunder >= minThunderInterval) {
 			// Randomly choose trans blue or trans pink
 			flash.color.setHex(Math.random() > 0.5 ? 0x5BCEFA : 0xF5A9B8);
 			flash.position.set(
