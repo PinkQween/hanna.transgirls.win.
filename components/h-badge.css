@@ -1,0 +1,11 @@
+:host {
+	display: inline-block;
+}
+
+.badge {
+	padding: .2rem .4rem;
+	font-size: 14px;
+	white-space: break-spaces;
+	background-color: #00000055;
+	border-radius: 6px;
+}
