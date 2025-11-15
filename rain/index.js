@@ -2,6 +2,8 @@ import * as THREE from "../libs/three.module.min.js";
 
 let scene,camera,renderer,rain,cloudParticles = [], rainParticles = [],flash,rainGeo,rainCount = 10000;
 let audioContext, rainNoiseSource, rainFilter, rainGain, thunderSound;
+let lastThunderTime = 0;
+const minThunderInterval = 5000; // Minimum 5 seconds between thunder strikes
 
 // Generate noise buffer for rain sound
 const createNoiseBuffer = (context, noiseType) => {
@@ -212,8 +214,11 @@ const animate = () => {
 		flash.intensity *= 0.9;
 	} else {
 		flash.intensity = 0;
-		// Random chance to trigger new flash
-		if (Math.random() > 0.996) {
+		// Random chance to trigger new flash (with cooldown to prevent clustering)
+		const currentTime = Date.now();
+		const timeSinceLastThunder = currentTime - lastThunderTime;
+
+		if (Math.random() > 0.996 && timeSinceLastThunder >= minThunderInterval) {
 			// Randomly choose trans blue or trans pink
 			flash.color.setHex(Math.random() > 0.5 ? 0x5BCEFA : 0xF5A9B8);
 			flash.position.set(
@@ -228,6 +233,8 @@ const animate = () => {
 				thunderSound.currentTime = 0;
 				thunderSound.play().catch(e => console.log('Thunder sound failed:', e));
 			}
+
+			lastThunderTime = currentTime;
 		}
 	}
 
