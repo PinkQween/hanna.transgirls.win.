@@ -68,24 +68,19 @@ const initAudio = () => {
 
 const init = () => {
 	// Initialize thunder sound
-	thunderSound = new Audio('./thunder.mp3');
+	thunderSound = new Audio('/rain/thunder.mp3');
 	thunderSound.volume = 1;
 
+	// Start audio immediately when page loads (let user listen to rain)
+	initAudio();
+
 	const overlay = document.getElementById('overlay');
-	const startBtn = document.getElementById('startBtn');
+	const homeBtn = document.getElementById('homeBtn');
 
-	// Handle button click
-	startBtn.addEventListener('click', () => {
-		// Hide overlay with fade out
-		overlay.classList.add('hidden');
-		setTimeout(() => {
-			overlay.style.display = 'none';
-		}, 1000);
-
-		// Initialize audio
-		if (!audioContext) {
-			initAudio();
-		}
+	// Handle button click to go home
+	homeBtn.addEventListener('click', () => {
+		// Redirect to home page
+		window.location.href = '/';
 	});
 
 	scene = new THREE.Scene();
@@ -161,7 +156,7 @@ const init = () => {
 
 	let loader = new THREE.TextureLoader();
 	loader.load(
-		"./bg.webp",
+		"/rain/bg.webp",
 		texture => {
 			const cloudGeo = new THREE.PlaneGeometry(500, 500);
 			const cloudMaterial = new THREE.MeshLambertMaterial({
