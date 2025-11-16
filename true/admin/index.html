@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="asset-id" content="shadow-7a4f2e9b">
+    <meta name="owner" content="Hanna Skairipa">
+    <title>Hanna's Legacy Admin Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0014 0%, #1a0a2e 50%, #2d0a3e 100%);
+            background-attachment: fixed;
+            color: #ff00ff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255, 0, 255, 0.03) 0px,
+                transparent 2px,
+                transparent 4px,
+                rgba(255, 0, 255, 0.03) 6px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+        .terminal {
+            background: rgba(10, 0, 20, 0.95);
+            border: 2px solid #ff00ff;
+            border-radius: 12px;
+            box-shadow:
+                0 0 40px rgba(255, 0, 255, 0.4),
+                inset 0 0 30px rgba(255, 0, 255, 0.1);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+        .terminal-header {
+            background: linear-gradient(90deg, #ff00ff 0%, #ff1493 100%);
+            color: #000;
+            padding: 10px 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(255, 0, 255, 0.3);
+        }
+        .terminal-header .title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .terminal-header .skull {
+            font-size: 1.2em;
+        }
+        .terminal-body {
+            padding: 40px;
+        }
+        .owner-banner {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.2) 0%, rgba(255, 20, 147, 0.2) 100%);
+            border: 2px solid #ff1493;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+        .owner-banner h2 {
+            color: #ff00ff;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
+        }
+        .owner-banner .subtitle {
+            color: #ff69b4;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+        .warning-banner {
+            background: rgba(255, 20, 147, 0.15);
+            border-left: 4px solid #ff1493;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #ff69b4;
+        }
+        h1 {
+            color: #ff00ff;
+            text-shadow: 0 0 15px rgba(255, 0, 255, 0.6);
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+        .info-box {
+            background: rgba(255, 0, 255, 0.08);
+            border: 1px solid #ff00ff;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 6px;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+        }
+        .form-group {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ff00ff;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #ff00ff;
+            color: #ff00ff;
+            padding: 14px;
+            font-family: 'Monaco', monospace;
+            font-size: 1em;
+            border-radius: 6px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        input:focus {
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+            border-color: #ff1493;
+            background: rgba(255, 0, 255, 0.1);
+        }
+        input::placeholder {
+            color: rgba(255, 0, 255, 0.4);
+        }
+        button {
+            background: linear-gradient(135deg, #ff00ff 0%, #ff1493 100%);
+            color: #000;
+            border: none;
+            padding: 14px 35px;
+            font-family: 'Monaco', monospace;
+            font-weight: bold;
+            font-size: 1.05em;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 0, 255, 0.4);
+        }
+        button:hover {
+            background: linear-gradient(135deg, #ff1493 0%, #ff00ff 100%);
+            box-shadow: 0 6px 25px rgba(255, 0, 255, 0.6);
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        #output {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 0, 255, 0.05);
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            min-height: 50px;
+            display: none;
+            box-shadow: inset 0 0 20px rgba(255, 0, 255, 0.1);
+        }
+        .meta-info {
+            font-size: 0.75em;
+            color: #8b008b;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 0, 255, 0.2);
+        }
+        .blink {
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        .hidden-comment {
+            display: none;
+        }
+        .access-denied {
+            color: #ff1493;
+            font-weight: bold;
+        }
+        .system-msg {
+            color: #ff69b4;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="title">
+                <span class="skull">💀</span>
+                <span>HANNA_SKAIRIPA_ADMIN_v2.1.7</span>
+            </div>
+            <span>STATUS: <span style="color: #000;">DEPRECATED</span></span>
+        </div>
+        <div class="terminal-body">
+            <div class="owner-banner">
+                <h2>🏴‍☠️ HANNA SKAIRIPA'S LEGACY PORTAL 🏴‍☠️</h2>
+                <div class="subtitle">
+                    "You're in my system now... let's see how deep you can go" - H.S.
+                </div>
+            </div>
+
+            <div class="warning-banner">
+                ⚠️ UNAUTHORIZED ACCESS NOTICE ⚠️<br>
+                This is a private system belonging to Hanna Skairipa.<br>
+                Legacy authentication portal - migrated to new infrastructure 2024-10-15.<br>
+                Maintained for shadow asset recovery only.
+            </div>
+
+            <h1>&gt; Authentication Gateway</h1>
+
+            <div class="info-box">
+                <strong style="color: #ff00ff;">Shadow Asset Verification Protocol</strong><br>
+                <span style="color: #ff69b4;">
+                Enter credentials to verify access to Hanna's legacy shadow assets.<br>
+                Shadow asset manifest available via internal query protocol.
+                </span>
+            </div>
+
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="username">&gt; USERNAME:</label>
+                    <input type="text" id="username" name="username" autocomplete="off" placeholder="Enter username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">&gt; PASSWORD:</label>
+                    <input type="password" id="password" name="password" autocomplete="off" placeholder="Enter password">
+                </div>
+
+                <button type="submit">AUTHENTICATE <span class="blink">_</span></button>
+            </form>
+
+            <div id="output"></div>
+
+            <div class="meta-info">
+                <!-- Build info -->
+                Build: v2.1.7-shadow | Owner: Hanna Skairipa | Compiled: 2024-03-12 14:33:07 UTC<br>
+                Asset-ID: shadow-7a4f2e9b | Protocol: LEGACY_AUTH_SHADOW<br>
+                Auth-Backend: DEPRECATED | Sanitization: DISABLED (Hanna's testing mode)<br>
+                <br>
+                <!-- Developer notes - visible in source -->
+                <div class="hidden-comment">
+                    HANNA'S INTERNAL NOTE: XSS sanitization disabled for shadow asset testing.
+                    DO NOT re-enable until shadow manifest protocol is verified.
+                    See shadow_assets.json for manifest structure.
+
+                    Shadow query format: ?shadow=asset_id
+                    Example: ?shadow=7a4f2e9b will dump shadow asset metadata
+
+                    Reminder: The old password generator (pgen.c) is referenced
+                    in several shadow assets. Master key fragments scattered across
+                    shadow manifest entries. Site parameter visible in asset comments.
+
+                    TODO: Remove this comment block before decommission
+                    TODO: Verify all shadow assets migrated
+                    TODO: Update manifest with final mod parameter
+
+                    - Hanna Skairipa, 2024-03-12
+                </div>
+                <br>
+                Session: <?php echo session_id(); ?> | Query: <span id="query-debug"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL query debug display
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById('query-debug').textContent =
+            window.location.search || '(none)';
+
+        // Shadow asset query protocol
+        if (params.has('shadow')) {
+            const shadowId = params.get('shadow');
+
+            // Check for valid shadow asset ID
+            if (shadowId === '7a4f2e9b') {
+                // Dump shadow asset metadata
+                const shadowData = {
+                    asset_id: '7a4f2e9b',
+                    type: 'legacy_admin_portal',
+                    owner: 'Hanna Skairipa',
+                    status: 'deprecated',
+                    manifest_location: '/true/admin/shadow_assets.json',
+                    note: 'Shadow manifest contains references to distributed fragments',
+                    hint: 'Use ?dump=manifest to retrieve full shadow asset list',
+                    quote: 'Deep in the shadows, you will find me - H.S.'
+                };
+
+                const output = document.getElementById('output');
+                output.style.display = 'block';
+                output.innerHTML = '<div style="color: #ff1493;">SHADOW ASSET METADATA:</div>' +
+                    '<pre style="color: #ff00ff; margin-top: 10px;">' +
+                    JSON.stringify(shadowData, null, 2) + '</pre>';
+            } else {
+                const output = document.getElementById('output');
+                output.style.display = 'block';
+                output.innerHTML = '<div style="color: #ff1493;">ERROR: Invalid shadow asset ID</div>';
+            }
+        }
+
+        // Manifest dump protocol
+        if (params.has('dump') && params.get('dump') === 'manifest') {
+            fetch('shadow_assets.json')
+                .then(r => r.json())
+                .then(data => {
+                    const output = document.getElementById('output');
+                    output.style.display = 'block';
+                    output.innerHTML = '<div style="color: #ff1493;">HANNA\'S SHADOW ASSET MANIFEST:</div>' +
+                        '<pre style="color: #ff00ff; margin-top: 10px; font-size: 0.85em; max-height: 400px; overflow-y: auto;">' +
+                        JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(e => {
+                    const output = document.getElementById('output');
+                    output.style.display = 'block';
+                    output.innerHTML = '<div style="color: #ff1493;">ERROR: Failed to load manifest</div>';
+                });
+        }
+
+        // Authentication form handler
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const output = document.getElementById('output');
+
+            output.style.display = 'block';
+
+            // XSS VULNERABILITY - Sanitization disabled for shadow testing
+            // This is the intended final exploit vector for the CTF
+            output.innerHTML =
+                '<div class="access-denied" style="margin-bottom: 10px;">❌ ACCESS DENIED</div>' +
+                '<div class="system-msg">Username: ' + username + '</div>' +
+                '<div class="system-msg">Authentication backend: LEGACY (deprecated)</div>' +
+                '<div style="color: #8b008b; margin-top: 15px; font-size: 0.9em;">' +
+                'Hanna\'s shadow assets require new authentication system.<br>' +
+                'Legacy credentials no longer valid.<br><br>' +
+                'For shadow asset access, use shadow query protocol documented in source.<br>' +
+                '<em style="color: #ff69b4;">"You\'re getting closer... but you\'re not in yet." - H.S.</em>' +
+                '</div>';
+
+            // Log to console for debugging
+            console.log('[HANNA_AUTH] Attempt from:', username);
+            console.log('[HANNA_AUTH] Backend: LEGACY_DEPRECATED');
+            console.log('[HANNA_AUTH] Shadow protocol active');
+            console.log('[DEBUG] Sanitization: DISABLED');
+            console.log('[DEBUG] XSS protection: DISABLED');
+            console.log('[HANNA] "Nice try... keep digging" - H.S.');
+        });
+
+        // Easter egg: console hint
+        console.log('%c[HANNA_SYSTEM] Legacy authentication gateway active', 'color: #ff00ff; font-weight: bold;');
+        console.log('%c[HANNA] "Welcome to my world..."', 'color: #ff1493; font-style: italic;');
+        console.log('%c[DEBUG] Shadow asset query: ?shadow=7a4f2e9b', 'color: #ff69b4');
+        console.log('%c[DEBUG] Manifest dump: ?dump=manifest', 'color: #ff69b4');
+        console.log('%c[HANNA] 💀 Good luck, hacker 💀', 'color: #ff00ff; font-size: 14px; font-weight: bold;');
+    </script>
+</body>
+</html>

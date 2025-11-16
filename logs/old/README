@@ -1,0 +1,97 @@
+╔═══════════════════════════════════════════════════╗
+║                                                   ║
+║            LEGACY LOG FILES ARCHIVE               ║
+║                                                   ║
+╚═══════════════════════════════════════════════════╝
+
+This directory contains deprecated log files from the
+old authentication system (2020-2021).
+
+⚠️  SCHEDULED FOR DELETION: 2024-12-31  ⚠️
+
+────────────────────────────────────────────────────
+
+CONTENTS:
+─────────
+
+admin_2021.html - HTML-formatted admin access logs
+                  Last entry: 2021-03-15
+                  Contains authentication attempts
+                  References debug files and backups
+                  INCLUDES MASTER KEY FRAGMENT 1
+
+────────────────────────────────────────────────────
+
+IMPORTANT NOTES:
+────────────────
+
+This log file contains the first fragment of the master
+key used in the password generation system.
+
+Fragment extraction method:
+  - Look for ERROR log entry at [2021-03-04 13:37:42.991]
+  - The entry explicitly states the fragment value
+  - Fragment 1: "S3cur3"
+
+Additional fragments located at:
+  - Fragment 2: /debug/userdump.tmp (hex encoding)
+  - Fragment 3: /admin-old/accounts.bak (reversed)
+
+────────────────────────────────────────────────────
+
+MIGRATION INFO:
+───────────────
+
+Old logs contain references to:
+  • Debug files in /debug/
+  • Backup files in /admin-old/
+  • Experimental auth system docs
+  • Permission mappings
+  • Shadow asset manifest
+
+All systems migrated to new architecture as of
+2021-03-15. These files retained for audit purposes
+and CTF challenge construction.
+
+────────────────────────────────────────────────────
+
+LOG RETENTION POLICY:
+─────────────────────
+
+Retention period: 90 days (legacy)
+Current status: Retained indefinitely for training
+Format: HTML (legacy), JSON (current)
+Access: Internal network only
+
+────────────────────────────────────────────────────
+
+CONTACT:
+────────
+
+Questions about legacy logs:
+  J. Anderson (dev@hanna.transgirls.win)
+
+Questions about new logging system:
+  DevOps Team (devops@hanna.transgirls.win)
+
+Security concerns:
+  Sarah (sarah@hanna.transgirls.win)
+
+────────────────────────────────────────────────────
+
+CTF CHALLENGE NOTES:
+────────────────────
+
+This directory is part of a security training CTF.
+
+Purpose: Information gathering and fragment collection
+Difficulty: Easy to Medium
+Skills: File exploration, pattern recognition
+
+Hint: The ERROR log entries are significant.
+      Pay attention to timestamps and explicit values.
+
+────────────────────────────────────────────────────
+
+Last Updated: 2021-03-15
+Status: ARCHIVED

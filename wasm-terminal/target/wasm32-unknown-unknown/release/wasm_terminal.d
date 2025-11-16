@@ -1,0 +1,1 @@
+/home/skairipa/hanna.transgirls.win./wasm-terminal/target/wasm32-unknown-unknown/release/wasm_terminal.wasm: /home/skairipa/hanna.transgirls.win./wasm-terminal/src/auth.rs /home/skairipa/hanna.transgirls.win./wasm-terminal/src/commands.rs /home/skairipa/hanna.transgirls.win./wasm-terminal/src/filesystem.rs /home/skairipa/hanna.transgirls.win./wasm-terminal/src/lib.rs

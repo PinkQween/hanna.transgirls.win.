@@ -1,0 +1,5 @@
+# Hashes (reverse to find files)
+# $(echo -n ".shadow" | sha256sum | cut -c1-16)
+# $(echo -n ".a" | sha256sum | cut -c1-16)
+# $(echo -n ".b" | sha256sum | cut -c1-16)
+# $(echo -n ".checksums" | sha256sum | cut -c1-16)

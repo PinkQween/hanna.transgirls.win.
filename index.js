@@ -1,4 +1,5 @@
 import "./components/index.js";
+import { RustCanvasTerminal } from "./rust-terminal.js";
 
 const hBadges = document.getElementById("h-badges");
 
@@ -50,7 +51,7 @@ let iLinks = shuffle([
 	},
 	{
 		img: "https://cyber.dabamos.de/88x31/transnow2.gif",
-		dest: "#"
+		dest: ""
 	},
 	{
 		img: "/assets/cloudflare.gif",
@@ -75,6 +76,14 @@ let iLinks = shuffle([
 	{
 		img: "https://raw.githubusercontent.com/PinkQween/badge-scraper/main/badges/FGoogle2.gif",
 		dest: ""
+	},
+	{
+		img: "/assets/ctf.png",
+		dest: "/CTF"
+	},
+	{
+		img: "https://raw.githubusercontent.com/PinkQween/badge-scraper/main/badges/00s.gif",
+		dest: ""
 	}
 ]);
 
@@ -94,3 +103,38 @@ iLinks.forEach((iLink, index) => {
 	const row = index % aBadges.length;
 	aBadges[row].appendChild(badge);
 });
+
+// Terminal Emulator - Wait for DOM to be fully loaded
+function initTerminal() {
+	console.log('Initializing terminal...');
+	console.log('Looking for terminal canvas...');
+	const canvas = document.getElementById('terminal-enumlator');
+	console.log('Canvas found:', canvas);
+
+	if (canvas) {
+		try {
+			console.log('Creating RustCanvasTerminal...');
+			const terminal = new RustCanvasTerminal(canvas);
+			console.log('Terminal created successfully');
+			window.terminal = terminal;
+
+			// Handle window resize
+			window.addEventListener('resize', () => {
+				terminal.setupCanvas();
+			});
+		} catch (error) {
+			console.error('Failed to create terminal:', error);
+			console.error('Error stack:', error.stack);
+		}
+	} else {
+		console.error('Canvas element not found!');
+	}
+}
+
+// Initialize terminal when DOM is ready
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', initTerminal);
+} else {
+	// DOM already loaded
+	initTerminal();
+}

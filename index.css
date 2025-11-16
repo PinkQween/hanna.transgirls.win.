@@ -55,7 +55,6 @@ a {
 }
 
 .container {
-	max-width: max(75vw, 36rem);
 	margin: 0 auto;
 	text-align: center
 }
@@ -70,7 +69,7 @@ a {
 
 
 .name {
-	background: linear-gradient(to bottom, var(--trans-blue) 0 30%, var(--trans-pink) 30% 45%, #fff 45% 55%, var(--trans-pink) 55% 70%, var(--trans-blue) 70% 100%);
+	background: linear-gradient(to bottom, var(--trans-blue) 0 30%, var(--trans-pink) 0% 45%, #fff 45% 55%, var(--trans-pink) 55% 70%, var(--trans-blue) 70% 100%);
 	background-clip: text;
 	-webkit-background-clip: text;
 	margin: 0 auto;
@@ -81,6 +80,11 @@ a {
 
 main {
 	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;      /* horizontal centering */
+	justify-content: center;  /* vertical centering */
+	gap: 1.5rem;              /* spacing between items */
 }
 
 #h-badges {
@@ -102,4 +106,26 @@ main {
 	flex-wrap: wrap;
 	gap: 2px;
 	height: 31px;
+}
+
+/* Terminal Canvas - 16:9 aspect ratio */
+#terminal-enumlator {
+	height: 60vh;
+	width: auto;
+	margin: 0 auto;
+	aspect-ratio: 16 / 9;
+	background: #000;
+	border: 2px solid var(--trans-blue);
+	border-radius: 8px;
+	display: block;
+	cursor: text;
+	box-shadow: 0 4px 15px rgba(91, 206, 250, 0.3);
+	margin-bottom: 3rem;
+}
+
+#main-content {
+	display: flex;
+	justify-content: space-between; /* Corrected from justify-items */
+	flex-direction: column;
+	min-height: calc(100dvh - 72px);
 }
