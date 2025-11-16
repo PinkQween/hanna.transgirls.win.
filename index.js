@@ -48,6 +48,14 @@ let iLinks = [
 	{
 		img: "https://cyber.dabamos.de/88x31/miku.gif",
 		dest: ""
+	},
+	{
+		img: "https://raw.githubusercontent.com/PinkQween/badge-scraper/main/badges/88by31.gif",
+		dest: "/badges"
+	},
+	{
+		img: "https://raw.githubusercontent.com/PinkQween/badge-scraper/main/badges/anything-but-windows.gif",
+		dest: ""
 	}
 ];
 

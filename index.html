@@ -1,23 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>Hanna | Trans</title>
-		<link rel="icon" type="image/x-icon" href="/favicon.png" />
-		<link rel="stylesheet" href="/index.css" />
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Hanna Skairipa | Trans Girl Developer</title>
+		<meta name="description" content="Hanna Skairipa - A trans girl passionate about technology, coding, and self-expression.">
+		<meta name="keywords" content="Hanna Skairipa, trans, transgender, developer, technology">
+		<meta name="author" content="Hanna Skairipa">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://hanna.transgirls.win/">
+		<meta property="og:title" content="Hanna Skairipa | Trans Girl Developer">
+		<meta property="og:description" content="A trans girl passionate about technology, coding, and self-expression.">
+		<meta property="og:image" content="/favicon.png">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary">
+		<meta property="twitter:url" content="https://hanna.transgirls.win/">
+		<meta property="twitter:title" content="Hanna Skairipa | Trans Girl Developer">
+		<meta property="twitter:description" content="A trans girl passionate about technology, coding, and self-expression.">
+		<meta property="twitter:image" content="/favicon.png">
+
+		<!-- PWA Manifest -->
+		<link rel="manifest" href="/manifest.json">
+		<meta name="theme-color" content="#5BCEFA">
+
+		<link rel="icon" type="image/x-icon" href="/favicon.png">
+
+		<!-- Preload critical resources to optimize network waterfall -->
+		<link rel="preload" href="/index.css" as="style">
+		<link rel="preload" href="/index.js" as="script">
+		<link rel="preload" href="/components/index.js" as="script">
+		<link rel="preload" href="/components/h-badge.js" as="script">
+		<link rel="preload" href="/components/a-badge.js" as="script">
+		<link rel="preload" href="/components/h-badge.html" as="fetch" crossorigin>
+		<link rel="preload" href="/components/h-badge.css" as="fetch" crossorigin>
+		<link rel="preload" href="/components/a-badge.html" as="fetch" crossorigin>
+		<link rel="preload" href="/components/a-badge.css" as="fetch" crossorigin>
+
+		<link rel="stylesheet" href="/index.css">
+
+		<!-- Structured Data for SEO -->
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "Person",
+			"name": "Hanna Skairipa",
+			"url": "https://hanna.transgirls.win/",
+			"sameAs": [
+				"https://hannaskairipa.com"
+			],
+			"description": "A trans girl passionate about technology, coding, and self-expression."
+		}
+		</script>
+
 		<script defer type="module" src="/index.js"></script>
 		<script defer src="/libs/oneko.js" data-cat="assets/oneko-maia.gif"></script>
 	</head>
 	<body>
+		<a href="#main-content" class="skip-to-content">Skip to main content</a>
 		<div class="container">
 			<div class="max">
-				<main>
+				<main id="main-content">
 					<a href="https://hannaskairipa.com">
 						<h1 class="name">Hanna Skairipa</h1>
 					</a>
 
 					<p>A trans girl with:</p>
 
-					<div id="h-badges">
+					<div id="h-badges" role="list" aria-label="Personal characteristics">
 					</div>
 
 					<!--Think what to add here-->

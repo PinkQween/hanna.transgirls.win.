@@ -1,8 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>Hanna | Trans</title>
-		<link rel="icon" type="image/x-icon" href="/favicon.png" />
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Badges | Hanna Skairipa</title>
+		<meta name="description" content="A collection of badges representing Hanna Skairipa's interests, skills, and identity.">
+		<meta name="robots" content="index, follow">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="theme-color" content="#5BCEFA">
+		<link rel="icon" type="image/x-icon" href="/favicon.png">
 		<script defer type="module" src="./index.js"></script>
 		<style>
 			* {
@@ -50,8 +56,8 @@
 		</style>
 	</head>
 	<body>
-		<div id="loading">Loading badges...</div>
-		<div id="container">
-		</div>
+		<div id="loading" role="status" aria-live="polite">Loading badges...</div>
+		<main id="container" aria-label="Badge collection grid">
+		</main>
 	</body>
 </html>

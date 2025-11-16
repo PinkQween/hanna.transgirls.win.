@@ -1,14 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<link rel="stylesheet" href="./index.css" />
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Rain Effect - Epilepsy Warning | Hanna Skairipa</title>
+		<meta name="description" content="Interactive rain animation effect. Warning: Contains flashing imagery that may affect users with photosensitive epilepsy.">
+		<meta name="keywords" content="rain effect, animation, interactive, web animation">
+		<meta name="robots" content="noindex, nofollow">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="Rain Effect - Epilepsy Warning">
+		<meta property="og:description" content="Interactive rain animation. Warning: Contains flashing imagery.">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary">
+		<meta property="twitter:title" content="Rain Effect - Epilepsy Warning">
+		<meta property="twitter:description" content="Interactive rain animation. Warning: Contains flashing imagery.">
+
+		<link rel="manifest" href="/manifest.json">
+		<meta name="theme-color" content="#000000">
+		<link rel="icon" type="image/x-icon" href="/favicon.png">
+
+		<!-- Preload critical resources -->
+		<link rel="preload" href="./index.css" as="style">
+		<link rel="preload" href="./index.js" as="script">
+
+		<link rel="stylesheet" href="./index.css">
 		<script defer type="module" src="./index.js"></script>
 	</head>
 	<body>
-		<div class="overlay" id="overlay">
+		<div class="overlay" id="overlay" role="alertdialog" aria-labelledby="warning-title" aria-describedby="warning-description">
 			<div class="popup">
-				<div class="warning">epilepsy warning</div>
-				<button class="start-btn" id="startBtn">okay.</button>
+				<h1 class="warning" id="warning-title">epilepsy warning</h1>
+				<p id="warning-description" class="sr-only">This content contains flashing imagery that may trigger seizures in people with photosensitive epilepsy.</p>
+				<button class="start-btn" id="startBtn" aria-label="Acknowledge warning and continue">okay.</button>
 			</div>
 		</div>
 	</body>

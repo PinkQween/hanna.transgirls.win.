@@ -7,6 +7,12 @@ body {
 	font-family: Arial, sans-serif;
 }
 
+/* Focus styles for accessibility */
+*:focus-visible {
+	outline: 3px solid #F7A8B8;
+	outline-offset: 3px;
+}
+
 .overlay {
 	position: fixed;
 	top: 0;
@@ -33,9 +39,9 @@ body {
 	text-align: center;
 	border: 2px solid #444;
 	backdrop-filter: blur(10px);
-	max-width: 500px;
+	/* max-width: 500px; */
 	position: relative;
-	min-height: 400px;
+	/* min-height: 400px; */
 }
 
 .error-code {
@@ -61,6 +67,10 @@ body {
 }
 
 .home-btn {
+	position: fixed;
+	bottom: 15vh;
+	left: 50%;
+	transform: translateX(-50%);
 	background: linear-gradient(135deg, #5BCEFA 0%, #F7A8B8 100%);
 	color: #000;
 	border: none;
@@ -70,15 +80,16 @@ body {
 	cursor: pointer;
 	text-transform: lowercase;
 	font-weight: bold;
-	transition: transform 0.3s, box-shadow 0.3s;
+	transition: left 0.3s ease, top 0.3s ease, bottom 0.3s ease, box-shadow 0.3s;
 	box-shadow: 0 4px 15px rgba(91, 206, 250, 0.3);
+	z-index: 1001;
+	white-space: nowrap;
 }
 
 .home-btn:hover {
-	transform: translateY(-2px);
 	box-shadow: 0 6px 25px rgba(247, 168, 184, 0.5);
 }
 
 .home-btn:active {
-	transform: translateY(0);
+	box-shadow: 0 4px 15px rgba(91, 206, 250, 0.3);
 }

@@ -7,13 +7,21 @@ class HBadge extends HTMLElement {
 
 	async init() {
 		console.log("h-badge init started", this.getAttribute("text"));
-		const htmlResponse = await fetch("/components/h-badge.html");
-		const htmlText = await htmlResponse.text();
+
+		// Fetch HTML and CSS in parallel instead of daisy-chaining
+		const [htmlResponse, cssResponse] = await Promise.all([
+			fetch("/components/h-badge.html"),
+			fetch("/components/h-badge.css")
+		]);
+
+		const [htmlText, cssText] = await Promise.all([
+			htmlResponse.text(),
+			cssResponse.text()
+		]);
+
 		let template = document.createElement("template");
 		template.innerHTML = htmlText;
 
-		const cssResponse = await fetch("/components/h-badge.css");
-		const cssText = await cssResponse.text();
 		let styles = new CSSStyleSheet();
 		await styles.replace(cssText);
 
@@ -22,8 +30,10 @@ class HBadge extends HTMLElement {
 
 		// Set initial text value if attribute exists
 		const text = this.getAttribute("text");
-		if (text) {
-			this.root.querySelector("p").innerText = text;
+		const p = this.root.querySelector("p");
+		if (text && p) {
+			p.innerText = text;
+			p.setAttribute("role", "listitem");
 		}
 		console.log("h-badge init completed", text);
 	}

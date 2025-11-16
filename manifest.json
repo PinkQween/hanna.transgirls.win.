@@ -1,0 +1,18 @@
+{
+  "name": "Hanna Skairipa",
+  "short_name": "Hanna",
+  "description": "A trans girl passionate about technology, coding, and self-expression.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#333333",
+  "theme_color": "#5BCEFA",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

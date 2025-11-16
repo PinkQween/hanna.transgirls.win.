@@ -7,14 +7,35 @@ class ABadge extends HTMLElement {
 
 	setOnClick = dest => () => open(dest, "_blank");
 
+	generateAltText(imgSrc, dest) {
+		// Extract meaningful description from image filename or destination
+		const imgName = imgSrc?.split('/').pop()?.replace(/\.(gif|png|jpg|jpeg|webp)$/i, '').replace(/[-_]/g, ' ') || '';
+		const destName = dest ? new URL(dest, window.location.href).hostname.replace('www.', '') : '';
+
+		if (imgName && imgName !== '88by31' && imgName !== 'transnow2') {
+			return imgName.charAt(0).toUpperCase() + imgName.slice(1) + ' badge';
+		}
+		if (destName) {
+			return `Badge linking to ${destName}`;
+		}
+		return 'Badge image';
+	}
+
 	async init() {
-		const htmlResponse = await fetch("/components/a-badge.html");
-		const htmlText = await htmlResponse.text();
+		// Fetch HTML and CSS in parallel instead of daisy-chaining
+		const [htmlResponse, cssResponse] = await Promise.all([
+			fetch("/components/a-badge.html"),
+			fetch("/components/a-badge.css")
+		]);
+
+		const [htmlText, cssText] = await Promise.all([
+			htmlResponse.text(),
+			cssResponse.text()
+		]);
+
 		let template = document.createElement("template");
 		template.innerHTML = htmlText;
 
-		const cssResponse = await fetch("/components/a-badge.css");
-		const cssText = await cssResponse.text();
 		let styles = new CSSStyleSheet();
 		await styles.replace(cssText);
 
@@ -29,10 +50,19 @@ class ABadge extends HTMLElement {
 
 		if (imgSrc) {
 			this._img.src = imgSrc;
+			this._img.alt = this.generateAltText(imgSrc, dest);
 		}
 		if (dest) {
-			this._img.alt = dest;
 			this._img.onclick = this.setOnClick(dest);
+			this._img.tabIndex = 0;
+			this._img.role = 'link';
+			this._img.style.cursor = 'pointer';
+			this._img.onkeydown = (e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.preventDefault();
+					this.setOnClick(dest)();
+				}
+			};
 		}
 	}
 
@@ -45,8 +75,9 @@ class ABadge extends HTMLElement {
 
 		if (attr === "img") {
 			this._img.src = v;
+			this._img.alt = this.generateAltText(v, this.getAttribute("dest"));
 		} else if (attr === "dest") {
-			this._img.alt = v;
+			this._img.alt = this.generateAltText(this.getAttribute("img"), v);
 			this._img.onclick = this.setOnClick(v);
 		}
 	}

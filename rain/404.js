@@ -91,29 +91,30 @@ const init = () => {
 
 		clickCount++;
 
-		if (clickCount <= 2) {
-			// Move button to random position with minimum distance
-			const popup = homeBtn.parentElement;
-			const popupRect = popup.getBoundingClientRect();
-			const minDistance = window.innerWidth * 0.1; // 10vw in pixels
+		if (clickCount <= Math.random() * 16) {
+			// Move button to random position in viewport with minimum distance
+			const minDistance = Math.max(window.innerWidth, window.innerHeight) * 0.3; // 30vw in pixels
+			const btnWidth = homeBtn.offsetWidth;
+			const btnHeight = homeBtn.offsetHeight;
 
-			// Get current position
+			// Get current position (in viewport coordinates for fixed positioning)
 			if (currentX === null) {
 				const btnRect = homeBtn.getBoundingClientRect();
-				currentX = btnRect.left - popupRect.left;
-				currentY = btnRect.top - popupRect.top;
+				currentX = btnRect.left;
+				currentY = btnRect.top;
 			}
 
 			let randomX, randomY, distance;
 			let attempts = 0;
 
-			// Try to find a position at least 10vw away
+			// Try to find a position at least minDistance away
 			do {
-				const maxX = popupRect.width - homeBtn.offsetWidth - 40;
-				const maxY = popupRect.height - homeBtn.offsetHeight - 40;
+				// Calculate random position within viewport bounds
+				const maxX = window.innerWidth - btnWidth - 40;
+				const maxY = window.innerHeight - btnHeight - 40;
 
-				randomX = Math.random() * maxX;
-				randomY = Math.random() * maxY;
+				randomX = Math.random() * maxX + 20; // 20px padding
+				randomY = Math.random() * maxY + 20;
 
 				// Calculate distance from current position
 				const dx = randomX - currentX;
@@ -121,16 +122,18 @@ const init = () => {
 				distance = Math.sqrt(dx * dx + dy * dy);
 
 				attempts++;
-			} while (distance < minDistance && attempts < 50);
+			} while (distance < minDistance && attempts < 500);
 
 			// Update position
 			currentX = randomX;
 			currentY = randomY;
 
-			homeBtn.style.position = 'absolute';
+			// Use fixed positioning relative to viewport
+			homeBtn.style.position = 'fixed';
 			homeBtn.style.left = randomX + 'px';
 			homeBtn.style.top = randomY + 'px';
-			homeBtn.style.transition = 'all 0.3s ease';
+			homeBtn.style.bottom = 'auto'; // Override bottom positioning
+			homeBtn.style.transform = 'none'; // Remove the centering transform
 		} else {
 			// Third click - go home
 			window.location.href = '/';

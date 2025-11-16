@@ -1,18 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>404 - Page Not Found</title>
-		<link rel="stylesheet" href="/rain/404.css" />
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>404 - Page Not Found | Hanna Skairipa</title>
+		<meta name="description" content="The page you're looking for doesn't exist. Looks like you've wandered into the rain.">
+		<meta name="robots" content="noindex, nofollow">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="404 - Page Not Found">
+		<meta property="og:description" content="The page you're looking for doesn't exist.">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary">
+		<meta property="twitter:title" content="404 - Page Not Found">
+		<meta property="twitter:description" content="The page you're looking for doesn't exist.">
+
+		<link rel="manifest" href="/manifest.json">
+		<meta name="theme-color" content="#000000">
+		<link rel="icon" type="image/x-icon" href="/favicon.png">
+
+		<!-- Preload critical resources -->
+		<link rel="preload" href="/rain/404.css" as="style">
+		<link rel="preload" href="/rain/404.js" as="script">
+
+		<link rel="stylesheet" href="/rain/404.css">
 		<script defer type="module" src="/rain/404.js"></script>
 	</head>
 	<body>
-		<div class="overlay" id="overlay">
+		<div class="overlay" id="overlay" role="dialog" aria-labelledby="error-code" aria-describedby="error-description">
 			<div class="popup">
-				<div class="error-code">404</div>
+				<div class="error-code" id="error-code" role="status" aria-live="polite">404</div>
 				<div class="error-message">page not found</div>
-				<p class="error-description">looks like you've wandered into the rain...</p>
-				<button class="home-btn" id="homeBtn">go home</button>
+				<p class="error-description" id="error-description">looks like you've wandered into the rain...</p>
 			</div>
 		</div>
+		<button class="home-btn" id="homeBtn" aria-label="Return to home page">go home</button>
 	</body>
 </html>
