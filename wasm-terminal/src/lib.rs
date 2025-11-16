@@ -140,7 +140,7 @@ impl RustTerminal {
     #[wasm_bindgen(js_name = getPrompt)]
     pub fn get_prompt(&self) -> String {
         match self.auth_state.as_str() {
-            "login_username" => "hanna-terminal login: ".to_string(),
+            "login_username" => "Terminal Emulator login: ".to_string(),
             "login_password" => "Password: ".to_string(),
             "active" => {
                 if let Some(ref user) = self.current_user {

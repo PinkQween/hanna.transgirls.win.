@@ -1,0 +1,30 @@
+/* tslint:disable */
+/* eslint-disable */
+export const memory: WebAssembly.Memory;
+export const __wbg_rustterminal_free: (a: number, b: number) => void;
+export const rustterminal_addDirectory: (a: number, b: number, c: number) => [number, number];
+export const rustterminal_addFile: (a: number, b: number, c: number, d: number, e: number) => [number, number];
+export const rustterminal_executeCommand: (a: number, b: number, c: number) => [number, number];
+export const rustterminal_getAuthState: (a: number) => [number, number];
+export const rustterminal_getCurrentDir: (a: number) => [number, number];
+export const rustterminal_getCurrentUsername: (a: number) => [number, number];
+export const rustterminal_getHistory: (a: number) => [number, number];
+export const rustterminal_getHistoryItem: (a: number, b: number) => [number, number];
+export const rustterminal_getHistoryLength: (a: number) => number;
+export const rustterminal_getPrompt: (a: number) => [number, number];
+export const rustterminal_isRoot: (a: number) => number;
+export const rustterminal_listDirectory: (a: number, b: number, c: number) => [number, number, number, number];
+export const rustterminal_listUsers: (a: number) => [number, number];
+export const rustterminal_loadFilesystem: (a: number, b: number, c: number) => [number, number];
+export const rustterminal_new: () => number;
+export const rustterminal_readFile: (a: number, b: number, c: number) => [number, number, number, number];
+export const rustterminal_saveFilesystem: (a: number) => [number, number, number, number];
+export const rustterminal_setUserPassword: (a: number, b: number, c: number, d: number, e: number) => void;
+export const main: () => void;
+export const __wbindgen_free: (a: number, b: number, c: number) => void;
+export const __wbindgen_malloc: (a: number, b: number) => number;
+export const __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+export const __wbindgen_externrefs: WebAssembly.Table;
+export const __externref_drop_slice: (a: number, b: number) => void;
+export const __externref_table_dealloc: (a: number) => void;
+export const __wbindgen_start: () => void;

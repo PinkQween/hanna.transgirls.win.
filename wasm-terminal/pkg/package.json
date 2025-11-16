@@ -1,0 +1,15 @@
+{
+  "name": "wasm-terminal",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "wasm_terminal_bg.wasm",
+    "wasm_terminal.js",
+    "wasm_terminal.d.ts"
+  ],
+  "main": "wasm_terminal.js",
+  "types": "wasm_terminal.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
