@@ -7,6 +7,12 @@ body {
 	font-family: Arial, sans-serif;
 }
 
+/* GPU acceleration for better performance */
+* {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
 /* Focus styles for accessibility */
 *:focus-visible {
 	outline: 3px solid #F7A8B8;
@@ -25,6 +31,7 @@ body {
 	align-items: center;
 	z-index: 1000;
 	transition: opacity 1s;
+	will-change: opacity;
 }
 
 .overlay.hidden {
@@ -84,6 +91,8 @@ body {
 	box-shadow: 0 4px 15px rgba(91, 206, 250, 0.3);
 	z-index: 1001;
 	white-space: nowrap;
+	will-change: left, top, box-shadow;
+	backface-visibility: hidden;
 }
 
 .home-btn:hover {

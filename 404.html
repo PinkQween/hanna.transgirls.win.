@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
 		<title>404 - Page Not Found | Hanna Skairipa</title>
 		<meta name="description" content="The page you're looking for doesn't exist. Looks like you've wandered into the rain.">
 		<meta name="robots" content="noindex, nofollow">
@@ -20,13 +21,33 @@
 		<link rel="manifest" href="/manifest.json">
 		<meta name="theme-color" content="#000000">
 		<link rel="icon" type="image/x-icon" href="/favicon.png">
+		<link rel="canonical" href="https://hanna.transgirls.win/404.html">
+
+		<!-- Structured Data for 404 -->
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "WebPage",
+			"name": "404 - Page Not Found",
+			"description": "The page you're looking for doesn't exist.",
+			"url": "https://hanna.transgirls.win/404.html",
+			"mainEntity": {
+				"@type": "Thing",
+				"name": "404 Error"
+			}
+		}
+		</script>
 
 		<!-- Preload critical resources -->
 		<link rel="preload" href="/rain/404.css" as="style">
 		<link rel="preload" href="/rain/404.js" as="script">
+		<link rel="modulepreload" href="/libs/three.module.min.js">
+
+		<!-- DNS prefetch for better performance -->
+		<link rel="dns-prefetch" href="https://hanna.transgirls.win">
 
 		<link rel="stylesheet" href="/rain/404.css">
-		<script defer type="module" src="/rain/404.js"></script>
+		<script type="module" src="/rain/404.js"></script>
 	</head>
 	<body>
 		<div class="overlay" id="overlay" role="dialog" aria-labelledby="error-code" aria-describedby="error-description">

@@ -74,6 +74,7 @@ const init = () => {
 	const overlay = document.getElementById('overlay');
 	const homeBtn = document.getElementById('homeBtn');
 	let clickCount = 0;
+	const neededClickCount = Math.random() * 16;
 	let currentX = null;
 	let currentY = null;
 	let audioStarted = false;
@@ -91,7 +92,7 @@ const init = () => {
 
 		clickCount++;
 
-		if (clickCount <= Math.random() * 16) {
+		if (clickCount <= neededClickCount) {
 			// Move button to random position in viewport with minimum distance
 			const minDistance = Math.max(window.innerWidth, window.innerHeight) * 0.3; // 30vw in pixels
 			const btnWidth = homeBtn.offsetWidth;

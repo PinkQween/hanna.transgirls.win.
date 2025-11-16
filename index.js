@@ -24,7 +24,18 @@ const hHas = [
 	"DU"
 ];
 
-let iLinks = [
+const shuffle = array => {
+	if (!Array.isArray(array) || array.length <= 1) return array;
+
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+
+	return array;
+}
+
+let iLinks = shuffle([
 	{
 		img: "https://transgirls.win/assets/media/transgirlsdark3.gif",
 		dest: "https://transgirls.win"
@@ -56,8 +67,16 @@ let iLinks = [
 	{
 		img: "https://raw.githubusercontent.com/PinkQween/badge-scraper/main/badges/anything-but-windows.gif",
 		dest: ""
+	},
+	{
+		img: "https://raw.githubusercontent.com/PinkQween/badge-scraper/main/badges/99a4d00a82cc786a1a666ad70bf4e8af.gif",
+		dest: ""
+	},
+	{
+		img: "https://raw.githubusercontent.com/PinkQween/badge-scraper/main/badges/FGoogle2.gif",
+		dest: ""
 	}
-];
+]);
 
 for (const i in hHas) {
 	const badge = document.createElement("h-badge");

@@ -10,7 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 <meta name="description" content="This is a fake phishing warning page for demonstration purposes. Not a real security threat.">
-<meta name="robots" content="noindex, nofollow" />
+<meta name="robots" content="index, follow" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 
 <!-- Preconnect to external resources for performance -->
@@ -55,12 +55,12 @@
             <div style="display: flex; align-items: center;">
                <p>
                  
-                   <a href="https://www.cloudflare.com/learning/access-management/phishing-attack/" class="cf-btn" style="background-color: #404040; color: #fff; border: 0;">Learn More</a>
+                   <a href="https://www.cloudflare.com/learning/access-management/phishing-attack/" class="cf-btn" style="background-color: #404040; color: #fff; border: 0;" aria-label="Learn more about phishing attacks on Cloudflare">Learn More About Phishing</a>
                  
                  
                     <form action="./cdn-cgi/phish-bypass" method="GET" enctype="text/plain">
                       <input type="hidden" name="atok" value="<hidden>">
-                      <button type="submit" class="cf-btn cf-btn-danger" style="color: #bd2426; background: transparent;" data-translate="dismiss_and_enter">Ignore & Proceed</button>
+                      <button type="submit" class="cf-btn cf-btn-danger" style="color: #bd2426; background: transparent;" data-translate="dismiss_and_enter" aria-label="Ignore phishing warning and proceed to website">Ignore Warning & Proceed</button>
                     </form>
                  
                </p>
@@ -75,11 +75,11 @@
     <span class="cf-footer-separator sm:hidden">&bull;</span>
     <span id="cf-footer-item-ip" class="cf-footer-item hidden sm:block sm:mb-1">
       Your IP:
-      <button type="button" id="cf-footer-ip-reveal" class="cf-footer-ip-reveal-btn">Click to reveal</button>
+      <button type="button" id="cf-footer-ip-reveal" class="cf-footer-ip-reveal-btn" aria-label="Click to reveal your IP address">Click to reveal</button>
       <span class="hidden" id="cf-footer-ip">127.0.0.1</span>
       <span class="cf-footer-separator sm:hidden">&bull;</span>
     </span>
-    <span class="cf-footer-item sm:block sm:mb-1"><span>Performance &amp; security by</span> <a rel="noopener noreferrer" href="https://www.cloudflare.com/5xx-error-landing" id="brand_link" target="_blank">Cloudflare</a></span>
+    <span class="cf-footer-item sm:block sm:mb-1"><span>Performance &amp; security by</span> <a rel="noopener noreferrer" href="https://www.cloudflare.com/5xx-error-landing" id="brand_link" target="_blank" aria-label="Learn more about Cloudflare performance and security">Cloudflare</a></span>
     
   </p>
   <script>(function(){function d(){var b=a.getElementById("cf-footer-item-ip"),c=a.getElementById("cf-footer-ip-reveal");b&&"classList"in b&&(b.classList.remove("hidden"),c.addEventListener("click",function(){c.classList.add("hidden");a.getElementById("cf-footer-ip").classList.remove("hidden")}))}var a=document;document.addEventListener&&a.addEventListener("DOMContentLoaded",d)})();</script>

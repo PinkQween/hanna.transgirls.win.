@@ -32,6 +32,8 @@ body {
 	align-items: center;
 	z-index: 1000;
 	transition: opacity 1s;
+	will-change: opacity;
+	backface-visibility: hidden;
 }
 
 .overlay.hidden {

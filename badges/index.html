@@ -6,10 +6,36 @@
 		<title>Badges | Hanna Skairipa</title>
 		<meta name="description" content="A collection of badges representing Hanna Skairipa's interests, skills, and identity.">
 		<meta name="robots" content="index, follow">
+		<meta http-equiv="Cache-Control" content="public, max-age=86400">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://hanna.transgirls.win/badges/">
+		<meta property="og:title" content="Badges | Hanna Skairipa">
+		<meta property="og:description" content="A collection of badges representing Hanna Skairipa's interests, skills, and identity.">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary">
+		<meta property="twitter:title" content="Badges | Hanna Skairipa">
+		<meta property="twitter:description" content="A collection of badges representing interests, skills, and identity.">
+
+		<link rel="canonical" href="https://hanna.transgirls.win/badges/">
 		<link rel="manifest" href="/manifest.json">
 		<meta name="theme-color" content="#5BCEFA">
 		<link rel="icon" type="image/x-icon" href="/favicon.png">
-		<script defer type="module" src="./index.js"></script>
+
+		<!-- Preload critical resources -->
+		<link rel="modulepreload" href="./index.js">
+		<link rel="modulepreload" href="/components/index.js">
+		<link rel="modulepreload" href="/components/a-badge.js">
+		<link rel="preload" href="/components/a-badge.html" as="fetch" crossorigin>
+		<link rel="preload" href="/components/a-badge.css" as="fetch" crossorigin>
+
+		<!-- DNS prefetch for external resources -->
+		<link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+		<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+
+		<script type="module" src="./index.js"></script>
 		<style>
 			* {
 				margin: 0;
@@ -48,10 +74,21 @@
 				font-family: monospace;
 				font-size: 20px;
 				z-index: 1000;
+				will-change: opacity;
 			}
 
 			#loading.hidden {
 				display: none;
+			}
+
+			/* Performance optimizations */
+			a-badge {
+				content-visibility: auto;
+				contain: layout style paint;
+			}
+
+			a-badge img {
+				loading: lazy;
 			}
 		</style>
 	</head>

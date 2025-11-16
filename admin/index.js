@@ -52,8 +52,8 @@
     `;
 
     // Show text at specific time in video
-    const showTextAtTime = 2; // seconds - adjust this value
-    const hideTextAtTime = 90; // seconds - adjust this value
+    const showTextAtTime = 3.75; // seconds - adjust this value
+    const hideTextAtTime = 64; // seconds - adjust this value
 
     video.addEventListener('timeupdate', () => {
       if (video.currentTime >= showTextAtTime && video.currentTime <= hideTextAtTime) {

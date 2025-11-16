@@ -66,28 +66,7 @@ const initAudio = () => {
 	}
 };
 
-const init = () => {
-	// Initialize thunder sound
-	thunderSound = new Audio('./thunder.mp3');
-	thunderSound.volume = 1;
-
-	const overlay = document.getElementById('overlay');
-	const startBtn = document.getElementById('startBtn');
-
-	// Handle button click
-	startBtn.addEventListener('click', () => {
-		// Hide overlay with fade out
-		overlay.classList.add('hidden');
-		setTimeout(() => {
-			overlay.style.display = 'none';
-		}, 1000);
-
-		// Initialize audio
-		if (!audioContext) {
-			initAudio();
-		}
-	});
-
+const initScene = () => {
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera(
 		60,
@@ -240,13 +219,40 @@ const animate = () => {
 
 	renderer.render(scene, camera);
 	requestAnimationFrame(animate);
-}
-
-init();
+};
 
 const onWindowResize = () => {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 
 	renderer.setSize(window.innerWidth, window.innerHeight);
-}
+};
+
+// Main initialization - lightweight, only sets up button listener
+const init = () => {
+	const overlay = document.getElementById('overlay');
+	const startBtn = document.getElementById('startBtn');
+
+	// Defer heavy initialization until user interaction
+	startBtn.addEventListener('click', () => {
+		// Hide overlay with fade out
+		overlay.classList.add('hidden');
+		setTimeout(() => {
+			overlay.style.display = 'none';
+		}, 1000);
+
+		// Initialize audio on user interaction
+		if (!audioContext) {
+			initAudio();
+		}
+
+		// Lazy load thunder sound
+		thunderSound = new Audio('./thunder.mp3');
+		thunderSound.volume = 1;
+
+		// Initialize 3D scene after user clicks
+		initScene();
+	}, { once: true }); // Only run once
+};
+
+init();
