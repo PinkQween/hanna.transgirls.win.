@@ -1,4 +1,18 @@
 // Canvas-based terminal using Rust WASM backend
+//
+// Supported keyboard shortcuts:
+// - Ctrl/Cmd + L: Clear screen
+// - Ctrl/Cmd + A: Move cursor to start of line
+// - Ctrl/Cmd + E: Move cursor to end of line
+// - Ctrl/Cmd + U: Clear line before cursor
+// - Ctrl/Cmd + K: Clear line after cursor
+// - Ctrl/Cmd + W: Delete word before cursor
+// - Ctrl/Cmd + C: Cancel current line
+// - Arrow Up/Down: Navigate command history
+// - Page Up/Down: Scroll through terminal output
+// - Mouse Wheel: Scroll through terminal output
+// - Ctrl/Cmd + V: Paste text
+//
 export class RustCanvasTerminal {
     constructor(canvas) {
         console.log('RustCanvasTerminal constructor called', canvas);
@@ -8,6 +22,7 @@ export class RustCanvasTerminal {
         this.currentLine = '';
         this.cursorX = 0;
         this.historyIndex = -1;
+        this.scrollOffset = 0;
         this.wasmTerminal = null;
 
         this.setupCanvas();
@@ -60,7 +75,7 @@ export class RustCanvasTerminal {
 
         this.fontSize = 14;
         this.lineHeight = 20;
-        this.padding = 10;
+        this.padding = 30;
         this.maxLines = Math.floor((this.canvas.height / dpr - this.padding * 2) / this.lineHeight);
 
         console.log('Canvas setup:', {
@@ -117,10 +132,14 @@ export class RustCanvasTerminal {
             return;
         } else if (output === 'CLEAR') {
             this.lines = [];
+            this.newPrompt();
+            return;
         } else if (output) {
             const outputLines = output.split('\n');
             outputLines.forEach(line => this.print(line));
         }
+        // Add new prompt after command execution
+        this.newPrompt();
     }
 
     print(text) {
@@ -144,9 +163,8 @@ export class RustCanvasTerminal {
             this.lines.push(currentLine);
         }
 
-        while (this.lines.length > this.maxLines) {
-            this.lines.shift();
-        }
+        // Auto-scroll to bottom when new content is added
+        this.scrollOffset = Math.max(0, this.lines.length - this.maxLines);
 
         this.render();
     }
@@ -160,6 +178,10 @@ export class RustCanvasTerminal {
             this.lines.push('$ ');
             this.cursorX = 2;
         }
+
+        // Auto-scroll to bottom when new prompt is added
+        this.scrollOffset = Math.max(0, this.lines.length - this.maxLines);
+
         this.render();
     }
 
@@ -170,17 +192,152 @@ export class RustCanvasTerminal {
 
         this.canvas.tabIndex = 0;
 
+        // Add paste event listener
+        this.canvas.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const pastedText = e.clipboardData.getData('text');
+            // Add pasted text to current line
+            if (pastedText) {
+                // Filter out newlines and control characters
+                const sanitized = pastedText.replace(/[\r\n]/g, '');
+                this.lines[this.lines.length - 1] += sanitized;
+                this.cursorX += sanitized.length;
+                this.render();
+            }
+        });
+
+        // Add wheel event listener for scrolling
+        this.canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = Math.sign(e.deltaY);
+            const maxScroll = Math.max(0, this.lines.length - this.maxLines);
+
+            this.scrollOffset = Math.max(0, Math.min(maxScroll, this.scrollOffset + delta));
+            this.render();
+        });
+
         this.canvas.addEventListener('keydown', (e) => {
+            const isCtrl = e.ctrlKey || e.metaKey; // Support both Ctrl (Windows/Linux) and Cmd (Mac)
+            const promptLength = this.wasmTerminal ? this.wasmTerminal.getPrompt().length : 2;
+
+            // Ctrl+L or Cmd+L: Clear screen
+            if (isCtrl && e.key === 'l') {
+                e.preventDefault();
+                this.lines = [];
+                this.scrollOffset = 0;
+                this.newPrompt();
+                return;
+            }
+
+            // Ctrl+C or Cmd+C: Cancel current line (if there's input)
+            if (isCtrl && e.key === 'c') {
+                const lastLine = this.lines[this.lines.length - 1];
+                const currentInput = lastLine.substring(promptLength);
+
+                if (currentInput.length > 0) {
+                    e.preventDefault();
+                    this.lines[this.lines.length - 1] += '^C';
+                    this.print('');
+                    this.newPrompt();
+                    this.historyIndex = -1;
+                    return;
+                }
+            }
+
+            // Ctrl+A or Cmd+A: Move cursor to start of line
+            if (isCtrl && e.key === 'a') {
+                e.preventDefault();
+                this.cursorX = promptLength;
+                this.render();
+                return;
+            }
+
+            // Ctrl+E or Cmd+E: Move cursor to end of line
+            if (isCtrl && e.key === 'e') {
+                e.preventDefault();
+                this.cursorX = this.lines[this.lines.length - 1].length;
+                this.render();
+                return;
+            }
+
+            // Ctrl+U or Cmd+U: Clear line before cursor
+            if (isCtrl && e.key === 'u') {
+                e.preventDefault();
+                const lastLine = this.lines[this.lines.length - 1];
+                const prompt = lastLine.substring(0, promptLength);
+                const afterCursor = lastLine.substring(this.cursorX);
+                this.lines[this.lines.length - 1] = prompt + afterCursor;
+                this.cursorX = promptLength;
+                this.render();
+                return;
+            }
+
+            // Ctrl+K or Cmd+K: Clear line after cursor
+            if (isCtrl && e.key === 'k') {
+                e.preventDefault();
+                const lastLine = this.lines[this.lines.length - 1];
+                this.lines[this.lines.length - 1] = lastLine.substring(0, this.cursorX);
+                this.render();
+                return;
+            }
+
+            // Ctrl+W or Cmd+W: Delete word before cursor
+            if (isCtrl && e.key === 'w') {
+                e.preventDefault();
+                const lastLine = this.lines[this.lines.length - 1];
+                const beforeCursor = lastLine.substring(0, this.cursorX);
+                const afterCursor = lastLine.substring(this.cursorX);
+
+                // Find the last word boundary
+                const promptText = beforeCursor.substring(0, promptLength);
+                const userInput = beforeCursor.substring(promptLength);
+                const trimmed = userInput.trimEnd();
+                const lastSpaceIndex = trimmed.lastIndexOf(' ');
+
+                let newBeforeCursor;
+                if (lastSpaceIndex === -1) {
+                    // No space found, delete everything
+                    newBeforeCursor = promptText;
+                } else {
+                    // Delete from last space
+                    newBeforeCursor = promptText + trimmed.substring(0, lastSpaceIndex + 1);
+                }
+
+                this.lines[this.lines.length - 1] = newBeforeCursor + afterCursor;
+                this.cursorX = newBeforeCursor.length;
+                this.render();
+                return;
+            }
+
+            // Page Up: Scroll up
+            if (e.key === 'PageUp') {
+                e.preventDefault();
+                const maxScroll = Math.max(0, this.lines.length - this.maxLines);
+                this.scrollOffset = Math.max(0, this.scrollOffset - 5);
+                this.render();
+                return;
+            }
+
+            // Page Down: Scroll down
+            if (e.key === 'PageDown') {
+                e.preventDefault();
+                const maxScroll = Math.max(0, this.lines.length - this.maxLines);
+                this.scrollOffset = Math.min(maxScroll, this.scrollOffset + 5);
+                this.render();
+                return;
+            }
+
             if (e.key === 'Enter') {
                 e.preventDefault();
                 const lastLine = this.lines[this.lines.length - 1];
-                const promptLength = this.wasmTerminal ? this.wasmTerminal.getPrompt().length : 2;
                 const input = lastLine.substring(promptLength);
                 this.executeCommand(input);
-                this.newPrompt();
+                // Reset history index when command is executed
+                this.historyIndex = -1;
+                // Reset scroll to bottom
+                this.scrollOffset = Math.max(0, this.lines.length - this.maxLines);
             } else if (e.key === 'Backspace') {
                 e.preventDefault();
-                const promptLength = this.wasmTerminal ? this.wasmTerminal.getPrompt().length : 2;
                 if (this.cursorX > promptLength) {
                     const lastLine = this.lines[this.lines.length - 1];
                     this.lines[this.lines.length - 1] = lastLine.slice(0, -1);
@@ -244,30 +401,48 @@ export class RustCanvasTerminal {
         this.ctx.fillStyle = '#222';
         this.ctx.fillRect(0, 0, rect.width, rect.height);
 
-        // Render lines
+        // Render lines with scroll support
         this.ctx.fillStyle = '#f0f';
         this.ctx.font = `${this.fontSize}px 'Courier New', monospace`;
 
-        this.lines.forEach((line, index) => {
-            const y = this.padding + index * this.lineHeight;
+        // Calculate which lines to show based on scroll offset
+        const startLine = this.scrollOffset;
+        const endLine = Math.min(this.lines.length, startLine + this.maxLines);
+
+        for (let i = startLine; i < endLine; i++) {
+            const line = this.lines[i];
+            const y = this.padding + (i - startLine) * this.lineHeight;
             this.ctx.fillText(line, this.padding, y);
-        });
+        }
 
-        // Render cursor
-        const lastLine = this.lines[this.lines.length - 1] || '';
-        const cursorY = this.padding + (this.lines.length - 1) * this.lineHeight;
-        const cursorTextWidth = this.ctx.measureText(lastLine).width;
+        // Render cursor (only if current line is visible)
+        const lastLineIndex = this.lines.length - 1;
+        if (lastLineIndex >= startLine && lastLineIndex < endLine) {
+            const lastLine = this.lines[lastLineIndex] || '';
+            const cursorY = this.padding + (lastLineIndex - startLine) * this.lineHeight;
+            const cursorTextWidth = this.ctx.measureText(lastLine).width;
 
-        // Blinking cursor
-        const now = Date.now();
-        if (Math.floor(now / 500) % 2 === 0) {
-            this.ctx.fillStyle = '#fff';
-            this.ctx.fillRect(
-                this.padding + cursorTextWidth,
-                cursorY,
-                2,
-                this.fontSize
-            );
+            // Blinking cursor
+            const now = Date.now();
+            if (Math.floor(now / 500) % 2 === 0) {
+                this.ctx.fillStyle = '#fff';
+                this.ctx.fillRect(
+                    this.padding + cursorTextWidth,
+                    cursorY,
+                    2,
+                    this.fontSize
+                );
+            }
+        }
+
+        // Render scroll indicator if there are more lines than visible
+        if (this.lines.length > this.maxLines) {
+            const scrollPercentage = this.scrollOffset / Math.max(1, this.lines.length - this.maxLines);
+            const indicatorHeight = 20;
+            const indicatorY = this.padding + scrollPercentage * (rect.height - this.padding * 2 - indicatorHeight);
+
+            this.ctx.fillStyle = 'rgba(255, 0, 255, 0.3)';
+            this.ctx.fillRect(rect.width - 10, indicatorY, 5, indicatorHeight);
         }
     }
 

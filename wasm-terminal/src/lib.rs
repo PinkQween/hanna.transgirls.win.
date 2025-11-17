@@ -1,6 +1,7 @@
 mod filesystem;
 mod commands;
 mod auth;
+pub mod js_api;
 
 use wasm_bindgen::prelude::*;
 use std::collections::HashMap;
