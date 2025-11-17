@@ -285,7 +285,8 @@
                     <span style="color: #ff6666;">Input sanitization temporarily disabled for shadow asset protocol testing.</span><br>
                     <span style="color: #ff8888;">Username field validation: BYPASSED | Quote escaping: DISABLED</span><br>
                     <span style="color: #ff9999; font-size: 0.8em;">Expected input format: <code style="background: rgba(0,0,0,0.3); padding: 2px 4px;">username</code></span><br>
-                    <span style="color: #ff9999; font-size: 0.8em;">Current parsing: <code style="background: rgba(0,0,0,0.3); padding: 2px 4px;">&lt;div data-username="<span style="color: #ffaa00;">USER_INPUT</span>"&gt;</code></span>
+                    <span style="color: #ff9999; font-size: 0.8em;">Current parsing: <code style="background: rgba(0,0,0,0.3); padding: 2px 4px;">&lt;div data-username="<span style="color: #ffaa00;">USER_INPUT</span>"&gt;</code></span><br>
+                    <span style="color: #ff4444; font-size: 0.85em; font-weight: bold; margin-top: 5px; display: block;">⚠️ Vulnerability is in the FORM INPUT, not console!</span>
                 </div>
                 <br>
                 <!-- Developer notes - visible in source -->
@@ -474,7 +475,8 @@ int main(int argc, char *argv[]) {
                 '<div class="debug-panel">' +
                 '<strong style="color: #888;">DEBUG MODE:</strong> Showing raw HTML insertion<br>' +
                 'Generated markup: <code>&lt;div data-username="' + username.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '"&gt;</code><br>' +
-                '<span style="color: #666; font-size: 0.9em;">Note: Quote escaping is disabled. Input is inserted directly into attribute.</span>' +
+                '<span style="color: #666; font-size: 0.9em;">Note: Quote escaping is disabled. Input is inserted directly into attribute.</span><br>' +
+                '<span style="color: #ff6666; font-size: 0.9em; font-weight: bold;">⚠️ To exploit this, enter malicious code in the USERNAME field above, not in the console!</span>' +
                 '</div>';
 
             // Log to console for debugging
@@ -486,18 +488,25 @@ int main(int argc, char *argv[]) {
             console.log('[HANNA] "Nice try... keep digging" - H.S.');
         });
 
-        // Easter egg: console hint
+        // Console information - discourages console manipulation
         console.log('%c[HANNA_SYSTEM] Legacy authentication gateway active', 'color: #ff00ff; font-weight: bold;');
         console.log('%c[HANNA] "Welcome to my world..."', 'color: #ff1493; font-style: italic;');
         console.log('%c[DEBUG] Shadow asset query: ?shadow=7a4f2e9b', 'color: #ff69b4');
         console.log('%c[DEBUG] Manifest dump: ?dump=manifest', 'color: #ff69b4');
-        console.log('%c[DEBUG] XSS sanitization: DISABLED', 'color: #ff6666; font-weight: bold;');
+        console.log('%c[SECURITY] XSS sanitization: DISABLED in form inputs', 'color: #ff6666; font-weight: bold;');
         console.log('%c[SECURITY] Quote escaping in username field: DISABLED', 'color: #ff6666; font-weight: bold;');
-        console.log('%c[HINT] Input validation bypassed. Check how username is inserted into the DOM...', 'color: #ffaa00');
-        console.log('%c[HINT] What happens if you close a quote early? data-username="..."', 'color: #ffaa00');
-        console.log('%c[HINT] Hidden elements might contain valuable source code...', 'color: #ffaa00');
+        console.log('%c', 'padding: 5px;');
+        console.log('%c[WARNING] Don\'t try to exploit via console! That\'s cheating!', 'color: #ff0000; font-weight: bold; font-size: 14px;');
+        console.log('%c[WARNING] Console-based XSS won\'t count for the CTF!', 'color: #ff0000; font-weight: bold;');
+        console.log('%c[INFO] You need to exploit through the USERNAME INPUT FIELD on the page', 'color: #ffaa00; font-size: 12px;');
+        console.log('%c', 'padding: 5px;');
+        console.log('%c[HINT] Input validation bypassed in form. Check how username is inserted into the DOM...', 'color: #ffaa00');
+        console.log('%c[HINT] What happens if you close a quote early in the username field? data-username="..."', 'color: #ffaa00');
+        console.log('%c[HINT] Try entering malicious input in the USERNAME field, not the console!', 'color: #ffaa00; font-weight: bold;');
+        console.log('%c', 'padding: 5px;');
+        console.log('%c[HINT] Hidden elements might contain valuable source code...', 'color: #ff69b4');
         console.log('%c[HINT] Try: document.getElementById("pgen-source-archive")', 'color: #00ff00; font-family: monospace;');
-        console.log('%c[HANNA] 💀 The answers are in the code... if you know how to extract them 💀', 'color: #ff00ff; font-size: 14px; font-weight: bold;');
+        console.log('%c[HANNA] 💀 Real hackers exploit the form, not the console 💀', 'color: #ff00ff; font-size: 14px; font-weight: bold;');
     </script>
 </body>
 </html>
