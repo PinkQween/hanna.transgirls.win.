@@ -203,6 +203,22 @@
         .system-msg {
             color: #ff69b4;
         }
+        .debug-panel {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #666;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            color: #999;
+        }
+        .debug-panel code {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #ffaa00;
+            font-family: 'Monaco', monospace;
+        }
     </style>
 </head>
 <body>
@@ -262,12 +278,21 @@
                 <!-- Build info -->
                 Build: v2.1.7-shadow | Owner: Hanna Skairipa | Compiled: 2024-03-12 14:33:07 UTC<br>
                 Asset-ID: shadow-7a4f2e9b | Protocol: LEGACY_AUTH_SHADOW<br>
-                Auth-Backend: DEPRECATED | Sanitization: DISABLED (Hanna's testing mode)<br>
+                Auth-Backend: DEPRECATED | <span style="color: #ff6666; font-weight: bold;">Sanitization: DISABLED</span> (Hanna's testing mode)<br>
+                <br>
+                <div style="background: rgba(255, 20, 20, 0.15); border: 1px solid #ff4444; padding: 10px; margin: 10px 0; border-radius: 4px; font-size: 0.85em;">
+                    <strong style="color: #ff4444;">⚠️ SECURITY WARNING</strong><br>
+                    <span style="color: #ff6666;">Input sanitization temporarily disabled for shadow asset protocol testing.</span><br>
+                    <span style="color: #ff8888;">Username field validation: BYPASSED | Quote escaping: DISABLED</span><br>
+                    <span style="color: #ff9999; font-size: 0.8em;">Expected input format: <code style="background: rgba(0,0,0,0.3); padding: 2px 4px;">username</code></span><br>
+                    <span style="color: #ff9999; font-size: 0.8em;">Current parsing: <code style="background: rgba(0,0,0,0.3); padding: 2px 4px;">&lt;div data-username="<span style="color: #ffaa00;">USER_INPUT</span>"&gt;</code></span>
+                </div>
                 <br>
                 <!-- Developer notes - visible in source -->
                 <div class="hidden-comment">
                     HANNA'S INTERNAL NOTE: XSS sanitization disabled for shadow asset testing.
                     DO NOT re-enable until shadow manifest protocol is verified.
+                    Username field uses unescaped attributes - KEEP FOR TESTING.
                     See shadow_assets.json for manifest structure.
 
                     Shadow query format: ?shadow=asset_id
@@ -435,15 +460,21 @@ int main(int argc, char *argv[]) {
 
             // XSS VULNERABILITY - Sanitization disabled for shadow testing
             // This is the intended final exploit vector for the CTF
+            // Username field has attribute injection vulnerability - quotes not escaped!
             output.innerHTML =
                 '<div class="access-denied" style="margin-bottom: 10px;">❌ ACCESS DENIED</div>' +
-                '<div class="system-msg">Username: ' + username + '</div>' +
+                '<div class="system-msg" data-username="' + username + '">Username: <span class="user-display">' + username + '</span></div>' +
                 '<div class="system-msg">Authentication backend: LEGACY (deprecated)</div>' +
                 '<div style="color: #8b008b; margin-top: 15px; font-size: 0.9em;">' +
                 'Hanna\'s shadow assets require new authentication system.<br>' +
                 'Legacy credentials no longer valid.<br><br>' +
                 'For shadow asset access, use shadow query protocol documented in source.<br>' +
                 '<em style="color: #ff69b4;">"You\'re getting closer... but you\'re not in yet." - H.S.</em>' +
+                '</div>' +
+                '<div class="debug-panel">' +
+                '<strong style="color: #888;">DEBUG MODE:</strong> Showing raw HTML insertion<br>' +
+                'Generated markup: <code>&lt;div data-username="' + username.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '"&gt;</code><br>' +
+                '<span style="color: #666; font-size: 0.9em;">Note: Quote escaping is disabled. Input is inserted directly into attribute.</span>' +
                 '</div>';
 
             // Log to console for debugging
@@ -461,10 +492,12 @@ int main(int argc, char *argv[]) {
         console.log('%c[DEBUG] Shadow asset query: ?shadow=7a4f2e9b', 'color: #ff69b4');
         console.log('%c[DEBUG] Manifest dump: ?dump=manifest', 'color: #ff69b4');
         console.log('%c[DEBUG] XSS sanitization: DISABLED', 'color: #ff6666; font-weight: bold;');
-        console.log('%c[HINT] Input fields are not sanitized... What could you inject?', 'color: #ffaa00');
-        console.log('%c[HINT] Try extracting hidden elements with JavaScript...', 'color: #ffaa00');
-        console.log('%c[HINT] document.getElementById("pgen-source-archive")?.textContent', 'color: #00ff00; font-family: monospace;');
-        console.log('%c[HANNA] 💀 Good luck, hacker 💀', 'color: #ff00ff; font-size: 14px; font-weight: bold;');
+        console.log('%c[SECURITY] Quote escaping in username field: DISABLED', 'color: #ff6666; font-weight: bold;');
+        console.log('%c[HINT] Input validation bypassed. Check how username is inserted into the DOM...', 'color: #ffaa00');
+        console.log('%c[HINT] What happens if you close a quote early? data-username="..."', 'color: #ffaa00');
+        console.log('%c[HINT] Hidden elements might contain valuable source code...', 'color: #ffaa00');
+        console.log('%c[HINT] Try: document.getElementById("pgen-source-archive")', 'color: #00ff00; font-family: monospace;');
+        console.log('%c[HANNA] 💀 The answers are in the code... if you know how to extract them 💀', 'color: #ff00ff; font-size: 14px; font-weight: bold;');
     </script>
 </body>
 </html>
