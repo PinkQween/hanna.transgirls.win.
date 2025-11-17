@@ -1,7 +1,6 @@
 # CTF Solution Files (DO NOT COMMIT - These contain answers/walkthroughs)
 CTF_SOLUTION.txt
 CTF_COMPLETE_GUIDE.md
-steg_extract.py
 
 # Password hash generator (developer tool only - not for production)
 hash_generator.html
