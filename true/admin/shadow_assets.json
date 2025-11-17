@@ -1,0 +1,216 @@
+{
+  "manifest_version": "2.1.7",
+  "owner": "Hanna Skairipa",
+  "created": "2021-03-12T08:44:19.223Z",
+  "last_modified": "2021-03-15T16:30:22.445Z",
+  "status": "archived",
+  "purpose": "Shadow asset tracking and CTF training",
+
+  "metadata": {
+    "asset_count": 4,
+    "classification": "CONFIDENTIAL",
+    "retention_policy": "indefinite",
+    "migration_status": "complete",
+    "ctf_enabled": true
+  },
+
+  "parameters": {
+    "master_key_mod": 13,
+    "hash_algorithm": "SHA-256",
+    "fragment_count": 3,
+    "encoding_methods": ["plaintext", "hex", "reversed"]
+  },
+
+  "shadow_assets": [
+    {
+      "asset_id": "7a4f2e9b",
+      "type": "legacy_admin_portal",
+      "location": "/true/admin/index.html",
+      "status": "active",
+      "owner": "Hanna Skairipa",
+      "created": "2021-03-12",
+      "description": "Legacy authentication portal with XSS vulnerability for training",
+      "vulnerabilities": [
+        {
+          "type": "XSS",
+          "severity": "high",
+          "location": "authentication form",
+          "sanitization": "disabled",
+          "note": "Input fields render without escaping - intentional for CTF"
+        }
+      ],
+      "ctf_hints": {
+        "fragment_1": "Check ERROR logs in /logs/old/admin_2021.html",
+        "fragment_2": "Hex encoded in /debug/userdump.tmp",
+        "fragment_3": "Reversed string in /admin-old/accounts.bak",
+        "site_parameter": "Hidden in CTF badge image (steganography - red channel)",
+        "mod_parameter": "Hidden in shadow_badge.png (steganography - blue channel) OR see manifest parameters.master_key_mod",
+        "steganography": "Use steg_extract.py to extract hidden data from images",
+        "pgen_extraction": "Use XSS to extract pgen.c from hidden HTML content",
+        "final_step": "Compile pgen.c locally and generate password"
+      },
+      "comments": "Site parameter for pgen.c: shadow-assets | This asset demonstrates intentional vulnerabilities for security training"
+    },
+
+    {
+      "asset_id": "2f9b3e1a",
+      "type": "fragment_storage",
+      "location": "/logs/old/admin_2021.html",
+      "status": "archived",
+      "owner": "Hanna Skairipa",
+      "created": "2021-03-04",
+      "description": "Legacy log file containing Fragment 1 in ERROR entries",
+      "content_type": "text/html",
+      "fragment_info": {
+        "fragment_number": 1,
+        "encoding": "plaintext",
+        "location_hint": "Look for ERROR log entry at timestamp 2021-03-04 13:37:43.225",
+        "expected_value": "S3cur3"
+      },
+      "comments": "First fragment clearly visible in error logs - easiest to find"
+    },
+
+    {
+      "asset_id": "8c4d1a7f",
+      "type": "fragment_storage",
+      "location": "/debug/userdump.tmp",
+      "status": "archived",
+      "owner": "Hanna Skairipa",
+      "created": "2021-02-20",
+      "description": "Debug user data export containing Fragment 2 in hexadecimal",
+      "content_type": "text/plain",
+      "fragment_info": {
+        "fragment_number": 2,
+        "encoding": "hexadecimal",
+        "location_hint": "Search for 'Fragment 2 (HEX):' in the debug dump",
+        "decode_method": "Convert hex to ASCII string",
+        "hex_value": "5434735377307264"
+      },
+      "comments": "Second fragment requires hex decoding skill - moderate difficulty"
+    },
+
+    {
+      "asset_id": "5e3b9c2d",
+      "type": "fragment_storage",
+      "location": "/admin-old/accounts.bak",
+      "status": "archived",
+      "owner": "Hanna Skairipa",
+      "created": "2021-02-15",
+      "description": "Legacy account backup containing Fragment 3 as reversed string",
+      "content_type": "text/plain",
+      "fragment_info": {
+        "fragment_number": 3,
+        "encoding": "reversed",
+        "location_hint": "Find skairipa user record, look for reversed fragment",
+        "decode_method": "Reverse the string to get actual value",
+        "reversed_value": "3n3mg4rF"
+      },
+      "comments": "Third fragment requires string reversal - simple encoding"
+    }
+  ],
+
+  "ctf_walkthrough": {
+    "difficulty": "hard",
+    "stages": [
+      {
+        "stage": 1,
+        "name": "Information Gathering",
+        "description": "Discover fragment locations through file exploration",
+        "files_to_find": [
+          "/logs/old/README",
+          "/logs/old/admin_2021.html",
+          "/debug/userdump.tmp",
+          "/admin-old/accounts.bak",
+          "/true/admin/shadow_assets.json"
+        ]
+      },
+      {
+        "stage": 2,
+        "name": "Fragment Collection",
+        "description": "Extract and decode all three password fragments",
+        "tasks": [
+          "Extract Fragment 1 from ERROR logs (plaintext): S3cur3",
+          "Decode Fragment 2 from hex (5434735377307264): T4sSw0rd",
+          "Reverse Fragment 3 (3nm3rg4rF): Fr4gm3n3"
+        ]
+      },
+      {
+        "stage": 3,
+        "name": "Parameter Extraction",
+        "description": "Find site and mod parameters from shadow manifest",
+        "tasks": [
+          "Locate shadow_assets.json manifest",
+          "Extract 'site' from asset comments: shadow-assets",
+          "Extract 'mod' from parameters.master_key_mod: 13"
+        ]
+      },
+      {
+        "stage": 4,
+        "name": "XSS Exploitation",
+        "description": "Use XSS vulnerability to extract pgen.c source code",
+        "tasks": [
+          "Identify XSS vulnerability in /true/admin/index.html",
+          "Craft payload to read pgen.c from hidden HTML content",
+          "Extract full C source code for local compilation"
+        ]
+      },
+      {
+        "stage": 5,
+        "name": "Password Generation",
+        "description": "Compile pgen.c and generate the password",
+        "tasks": [
+          "Save extracted pgen.c locally",
+          "Compile: gcc -o pgen pgen.c",
+          "Execute: ./pgen S3cur3 T4sSw0rd Fr4gm3n3 shadow-assets 13",
+          "Note the generated password output"
+        ]
+      },
+      {
+        "stage": 6,
+        "name": "Password Hashing",
+        "description": "Convert generated password to SHA-256 hash",
+        "tasks": [
+          "Hash the pgen output using SHA-256",
+          "Can use hash_generator.html or command line",
+          "Result should match terminal authentication hash"
+        ]
+      },
+      {
+        "stage": 7,
+        "name": "Terminal Authentication",
+        "description": "Login to WASM terminal with generated password",
+        "tasks": [
+          "Navigate to terminal at /CTF or main page",
+          "Login as user: skairipa",
+          "Use the password generated from pgen.c",
+          "Access victory flag in /secrets/flag.txt"
+        ]
+      }
+    ],
+    "expected_solution": {
+      "fragment_1": "S3cur3",
+      "fragment_2": "T4sSw0rd",
+      "fragment_3": "Fr4gm3n3",
+      "site": "shadow-assets",
+      "mod": 13,
+      "pgen_command": "./pgen S3cur3 T4sSw0rd Fr4gm3n3 shadow-assets 13",
+      "note": "Final password is generated by pgen.c with above parameters"
+    }
+  },
+
+  "security_notes": {
+    "warning": "This manifest contains intentional vulnerabilities for training",
+    "xss_status": "Input sanitization DISABLED on admin portal",
+    "fragment_security": "Fragments use weak encoding (hex, reversal)",
+    "password_algorithm": "Custom algorithm in pgen.c (educational only)",
+    "production_note": "NEVER use these techniques in production systems"
+  },
+
+  "migration_info": {
+    "old_system": "Fragment-based password generation (pgen v2.1)",
+    "new_system": "Modern hash-based authentication (SHA-256)",
+    "migration_date": "2021-03-15",
+    "legacy_retention": "Retained for CTF and security training",
+    "decommission_date": "N/A - Permanent training resource"
+  }
+}

@@ -1,0 +1,156 @@
+╔════════════════════════════════════════════════════════════╗
+║                                                            ║
+║              USER DATA EXPORT - DEBUG MODE                 ║
+║                  [CONFIDENTIAL]                            ║
+║                                                            ║
+╚════════════════════════════════════════════════════════════╝
+
+Export Date: 2021-02-20 13:08:15 UTC
+Export Reason: Debug analysis for password fragment system
+Exported by: skairipa
+System: Legacy Authentication v2.1
+
+────────────────────────────────────────────────────────────
+
+USER DATABASE DUMP:
+───────────────────
+
+User ID: 1000
+Username: skairipa
+Full Name: Hanna Skairipa
+Email: hanna@transgirls.win
+Groups: wheel, sudo, users
+Home: /home/skairipa
+Shell: /bin/bash
+Created: 2020-08-15 14:22:01
+Last Login: 2021-02-20 12:45:33
+Status: Active
+
+────────────────────────────────────────────────────────────
+
+User ID: 0
+Username: root
+Full Name: System Administrator
+Email: root@localhost
+Groups: root
+Home: /root
+Shell: /bin/bash
+Created: 2020-08-15 14:00:00
+Last Login: 2021-02-18 09:12:45
+Status: Active
+
+────────────────────────────────────────────────────────────
+
+PASSWORD FRAGMENT STORAGE:
+───────────────────────────
+
+Fragment storage format: Encoded for security
+Encoding method: Hexadecimal
+
+Fragment 1 Location: /logs/old/admin_2021.html [ERROR logs]
+Fragment 1 Status: Plaintext in logs (leaked during debug)
+
+Fragment 2 Location: This file (hex encoded below)
+Fragment 2 Status: Encoded
+Fragment 2 (HEX): 5434735377307264
+
+Fragment 3 Location: /admin-old/accounts.bak
+Fragment 3 Status: Reversed string
+
+────────────────────────────────────────────────────────────
+
+FRAGMENT ASSEMBLY NOTES:
+─────────────────────────
+
+To reconstruct the master password:
+1. Extract Fragment 1 from error logs (plaintext)
+2. Decode Fragment 2 from hex (this file)
+3. Reverse Fragment 3 from accounts backup
+4. Retrieve 'site' parameter from shadow manifest
+5. Retrieve 'mod' parameter from shadow manifest
+6. Use pgen.c to generate final password
+7. Hash with SHA-256 for system authentication
+
+Security Note: This debug dump should be deleted after
+               migration to new authentication system.
+
+Fragment validation checksum: 0x7a4f2e9b
+Master key algorithm: pgen v2.1
+
+────────────────────────────────────────────────────────────
+
+SHADOW ASSET REFERENCES:
+─────────────────────────
+
+Shadow manifest location: /true/admin/shadow_assets.json
+Shadow asset ID: 7a4f2e9b
+Portal location: /true/admin/index.html
+
+Note: Shadow manifest contains the 'mod' parameter required
+      for password generation. The 'site' parameter is embedded
+      in the shadow asset metadata comments.
+
+────────────────────────────────────────────────────────────
+
+STEGANOGRAPHY CLUES:
+────────────────────
+
+Some parameters are hidden in image files using steganography.
+LSB (Least Significant Bit) encoding in RGB channels.
+
+Known steganography locations:
+  - /assets/ctf.png (RED channel) - site parameter hint
+  - /assets/shadow_badge.png (BLUE channel) - mod parameter hint
+
+Extraction tools:
+  - Custom script: steg_extract.py (provided in root)
+  - Alternative: steghide, zsteg, stegsolve
+  - Manual: Read LSB of each color channel pixel-by-pixel
+
+Usage: python3 steg_extract.py <image_file>
+       (Script auto-detects which channel contains data)
+
+────────────────────────────────────────────────────────────
+
+PGEN.C EXTRACTION:
+──────────────────
+
+The pgen.c source code is embedded in the admin portal at
+/true/admin/index.html but is NOT directly accessible via
+normal page viewing.
+
+XSS Vulnerability: Input sanitization is DISABLED on the
+                   admin portal authentication form.
+
+Exploitation hint: The username/password fields are directly
+                   rendered to the page output without escaping.
+                   Craft a payload to extract the pgen.c source
+                   which is stored in a hidden HTML comment or
+                   JavaScript variable.
+
+Suggested approach:
+  1. Inject XSS payload into username/password field
+  2. Use JavaScript to read document source or DOM
+  3. Extract the full pgen.c code from hidden elements
+  4. Save locally and compile with gcc
+
+────────────────────────────────────────────────────────────
+
+DEBUG MODE SETTINGS:
+────────────────────
+
+XSS Protection: DISABLED (for testing)
+Input Sanitization: DISABLED
+CORS Policy: Permissive
+Debug Logging: ENABLED
+Fragment Hints: ENABLED
+
+WARNING: Do NOT leave these settings enabled in production!
+
+────────────────────────────────────────────────────────────
+
+END OF USER DATA DUMP
+
+Exported: 2021-02-20 13:08:15.667 UTC
+Retention: 90 days
+Classification: CONFIDENTIAL - INTERNAL USE ONLY

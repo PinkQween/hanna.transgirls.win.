@@ -23,7 +23,7 @@ export class RustCanvasTerminal {
             console.log('Creating RustTerminal instance...');
             this.wasmTerminal = new wasm.RustTerminal();
 
-            this.wasmTerminal.setUserPassword("skairipa", "87541bd0712ad9a51d666a7a012f1dac6ad1e7300652e2fb4060d5d2dc5d72a8");
+            this.wasmTerminal.setUserPassword("skairipa", "936d04ec3da8478e72828e63e558cd8f12418becae504669fb878f571ee75d61");
 
             this.wasmTerminal.setUserPassword("root", "8f3e9a2c1b5d7f4e6a8c3b9d2f5e7a1c4d8b6e3f9a2c5d7e4b1f8a6c3e9d2b5f7");
 

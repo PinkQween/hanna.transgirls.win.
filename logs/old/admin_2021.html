@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Access Logs - 2021</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            margin: 0;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 8px;
+            border-left: 3px solid #00ff00;
+        }
+        .log-entry.error {
+            border-left-color: #ff0000;
+            color: #ff6666;
+        }
+        .log-entry.warning {
+            border-left-color: #ffaa00;
+            color: #ffcc66;
+        }
+        .log-entry.info {
+            border-left-color: #00aaff;
+            color: #66ccff;
+        }
+        .timestamp {
+            color: #888;
+        }
+        .level {
+            font-weight: bold;
+            margin: 0 10px;
+        }
+        pre {
+            background: #0a0a0a;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #333;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>╔════════════════════════════════════════════╗</h1>
+    <h1>║   LEGACY ADMIN ACCESS LOGS - 2021 Q1      ║</h1>
+    <h1>╚════════════════════════════════════════════╝</h1>
+
+    <div class="log-entry info">
+        <span class="timestamp">[2021-01-15 09:23:14.102]</span>
+        <span class="level">[INFO]</span>
+        Authentication system initialized
+    </div>
+
+    <div class="log-entry info">
+        <span class="timestamp">[2021-01-15 09:23:15.567]</span>
+        <span class="level">[INFO]</span>
+        Loading password generation module (pgen v2.1)
+    </div>
+
+    <div class="log-entry info">
+        <span class="timestamp">[2021-02-03 14:22:01.443]</span>
+        <span class="level">[INFO]</span>
+        Admin login successful: skairipa
+    </div>
+
+    <div class="log-entry warning">
+        <span class="timestamp">[2021-02-10 11:45:33.221]</span>
+        <span class="level">[WARN]</span>
+        Deprecated password storage format detected
+    </div>
+
+    <div class="log-entry info">
+        <span class="timestamp">[2021-02-15 16:12:09.889]</span>
+        <span class="level">[INFO]</span>
+        Backup created: /admin-old/accounts.bak
+    </div>
+
+    <div class="log-entry warning">
+        <span class="timestamp">[2021-02-20 13:07:42.334]</span>
+        <span class="level">[WARN]</span>
+        Debug mode enabled - userdump active
+    </div>
+
+    <div class="log-entry info">
+        <span class="timestamp">[2021-02-20 13:08:15.667]</span>
+        <span class="level">[INFO]</span>
+        User data exported to /debug/userdump.tmp
+    </div>
+
+    <div class="log-entry error">
+        <span class="timestamp">[2021-03-04 13:37:42.991]</span>
+        <span class="level">[ERROR]</span>
+        Password fragment validation failed
+    </div>
+
+    <div class="log-entry error">
+        <span class="timestamp">[2021-03-04 13:37:43.103]</span>
+        <span class="level">[ERROR]</span>
+        Fragment mismatch detected in master key reconstruction
+    </div>
+
+    <div class="log-entry error">
+        <span class="timestamp">[2021-03-04 13:37:43.225]</span>
+        <span class="level">[ERROR]</span>
+        Expected fragment 1: "S3cur3"
+    </div>
+
+    <div class="log-entry error">
+        <span class="timestamp">[2021-03-04 13:37:43.338]</span>
+        <span class="level">[ERROR]</span>
+        pgen.c compilation required for password generation
+    </div>
+
+    <div class="log-entry warning">
+        <span class="timestamp">[2021-03-04 13:37:50.112]</span>
+        <span class="level">[WARN]</span>
+        Falling back to manual fragment assembly
+    </div>
+
+    <div class="log-entry info">
+        <span class="timestamp">[2021-03-04 14:02:33.445]</span>
+        <span class="level">[INFO]</span>
+        Fragment recovery process documented in README
+    </div>
+
+    <div class="log-entry warning">
+        <span class="timestamp">[2021-03-10 10:15:22.778]</span>
+        <span class="level">[WARN]</span>
+        Multiple failed authentication attempts detected
+    </div>
+
+    <div class="log-entry info">
+        <span class="timestamp">[2021-03-12 08:44:19.223]</span>
+        <span class="level">[INFO]</span>
+        Shadow asset manifest created at /true/admin/shadow_assets.json
+    </div>
+
+    <div class="log-entry warning">
+        <span class="timestamp">[2021-03-15 16:30:05.991]</span>
+        <span class="level">[WARN]</span>
+        System migration scheduled - legacy auth will be deprecated
+    </div>
+
+    <div class="log-entry info">
+        <span class="timestamp">[2021-03-15 16:30:22.445]</span>
+        <span class="level">[INFO]</span>
+        All shadow assets migrated to new infrastructure
+    </div>
+
+    <div class="log-entry info">
+        <span class="timestamp">[2021-03-15 16:30:45.667]</span>
+        <span class="level">[INFO]</span>
+        Legacy system retained for audit and training purposes
+    </div>
+
+    <div class="log-entry info">
+        <span class="timestamp">[2021-03-15 16:31:00.001]</span>
+        <span class="level">[INFO]</span>
+        Authentication system shutdown - FINAL ENTRY
+    </div>
+
+    <hr style="border-color: #333; margin: 30px 0;">
+
+    <h2>╔════════════════════════════════════════════╗</h2>
+    <h2>║   ARCHIVED SYSTEM NOTES                   ║</h2>
+    <h2>╚════════════════════════════════════════════╝</h2>
+
+    <pre>
+Password Generation System Documentation:
+------------------------------------------
+
+The legacy password system uses a distributed fragment approach
+for enhanced security. Fragments must be collected from various
+system locations and combined using the pgen.c utility.
+
+Required fragments:
+  1. Fragment 1: "S3cur3" (found in ERROR logs above)
+  2. Fragment 2: Located in /debug/userdump.tmp (hex encoded)
+  3. Fragment 3: Located in /admin-old/accounts.bak (reversed string)
+
+Additional parameters:
+  - site: Found in shadow asset metadata
+  - mod: Integer parameter in shadow manifest
+
+Reconstruction process:
+  1. Collect all three fragments
+  2. Decode Fragment 2 from hex
+  3. Reverse Fragment 3
+  4. Extract site and mod from shadow assets
+  5. Compile pgen.c: gcc -o pgen pgen.c
+  6. Run: ./pgen <frag1> <frag2> <frag3> <site> <mod>
+  7. Hash the output for terminal authentication
+
+Note: pgen.c source code is stored in the admin portal but
+      requires XSS exploitation to extract (sanitization disabled).
+
+Last updated: 2021-03-15
+Status: ARCHIVED - DO NOT DELETE
+    </pre>
+
+</body>
+</html>

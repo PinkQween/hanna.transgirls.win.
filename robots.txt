@@ -26,6 +26,44 @@ Sitemap: https://hanna.transgirls.win/sitemap.xml
 #
 # UPDATE: Hanna said don't touch it yet, she's still using it for something...
 # - Dev team, 2024-10-20
+#
+# ═══════════════════════════════════════════════════════════════════
+# 🏴‍☠️ CTF CHALLENGE - SHADOW ASSETS 🏴‍☠️
+# ═══════════════════════════════════════════════════════════════════
+#
+# Welcome, hacker. If you're reading this, you've taken your first step.
+#
+# The /true/admin portal contains Hanna's legacy authentication system.
+# It's been deprecated but not decommissioned... for a reason.
+#
+# Your mission:
+#   1. Recover password fragments scattered across multiple files
+#   2. Extract parameters from hidden sources (including images)
+#   3. Exploit vulnerabilities to obtain necessary tools
+#   4. Compile and execute code locally
+#   5. Generate the master password
+#   6. Authenticate to the terminal system
+#
+# Starting points:
+#   - /true/admin/index.html (Legacy admin portal)
+#   - /logs/old/ (Archived logs with secrets)
+#   - /debug/ (Debug files left behind)
+#   - /assets/ctf.png (The badge contains more than meets the eye)
+#
+# Hints:
+#   - Look for "shadow assets" references
+#   - Check URL parameters on admin portal (?shadow=, ?dump=)
+#   - Not everything is visible to the naked eye
+#   - XSS sanitization is... disabled for a reason
+#   - You'll need to compile C code on YOUR machine
+#
+# Difficulty: HARD
+# Skills: Web exploitation, steganography, crypto, reverse engineering
+# Brute force: IMPOSSIBLE (3-attempt lockout)
+#
+# "Deep in the shadows, you will find me" - Hanna Skairipa
+#
+# ═══════════════════════════════════════════════════════════════════
 
 
 # Secret restoration of this ascii art from SeigedSec

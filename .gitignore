@@ -1,0 +1,38 @@
+# CTF Solution Files (DO NOT COMMIT - These contain answers/walkthroughs)
+CTF_SOLUTION.txt
+CTF_COMPLETE_GUIDE.md
+steg_extract.py
+
+# Password hash generator (developer tool only - not for production)
+hash_generator.html
+
+# Compiled binaries (users compile these themselves)
+pgen
+*.o
+*.out
+
+# Original images (backups before steganography)
+assets/*.original
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node modules (if any)
+node_modules/

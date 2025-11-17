@@ -1,0 +1,151 @@
+################################################################################
+#                                                                              #
+#                      LEGACY ACCOUNT DATABASE BACKUP                          #
+#                           [DEPRECATED FORMAT]                                #
+#                                                                              #
+################################################################################
+
+Backup Date: 2021-02-15 16:12:09 UTC
+Backup Type: Full database export
+Format: Legacy plaintext (pre-encryption era)
+Reason: Migration to new authentication system
+Retention: Indefinite (for CTF training)
+
+################################################################################
+
+ACCOUNT RECORDS:
+────────────────
+
+Record #1:
+──────────
+User ID: 1000
+Username: skairipa
+Full Name: Hanna Skairipa
+Email: hanna@transgirls.win
+Account Type: Administrator
+Created: 2020-08-15
+Status: Active
+Groups: wheel,sudo,users
+Home Directory: /home/skairipa
+Default Shell: /bin/bash
+
+Password Fragment Information:
+  Fragment Position: 3 of 3
+  Encoding: REVERSED (security through obfuscation - deprecated)
+  Fragment Value (REVERSED): 3n3mg4rF
+
+  Note: To use this fragment, reverse the string to get the actual value.
+        Example: "abc" reversed = "cba"
+        This fragment must be reversed before use with pgen.c
+
+Additional Metadata:
+  Last Password Change: 2021-01-10
+  Password Expiry: Never
+  Two-Factor Auth: Disabled (legacy system)
+  Recovery Email: recovery@transgirls.win
+
+────────────────────────────────────────────────────────────────────────────
+
+Record #2:
+──────────
+User ID: 0
+Username: root
+Full Name: System Administrator
+Email: root@localhost
+Account Type: System Root
+Created: 2020-08-15
+Status: Active
+Groups: root
+Home Directory: /root
+Default Shell: /bin/bash
+
+Password Fragment Information:
+  Fragment Position: N/A
+  Encoding: N/A
+  Fragment Value: [ROOT ACCOUNT - SEPARATE AUTH SYSTEM]
+
+  Note: Root account uses independent authentication.
+        Not part of fragment-based password system.
+
+Additional Metadata:
+  Last Password Change: 2021-02-01
+  Password Expiry: Never
+  Two-Factor Auth: Disabled
+  Recovery Email: N/A
+
+────────────────────────────────────────────────────────────────────────────
+
+FRAGMENT ASSEMBLY INSTRUCTIONS:
+────────────────────────────────
+
+This backup contains Fragment 3 of the master password system.
+
+Complete fragment collection:
+  ✓ Fragment 1: Found in /logs/old/admin_2021.html (ERROR logs)
+    Value: "S3cur3" (plaintext)
+
+  ✓ Fragment 2: Found in /debug/userdump.tmp
+    Value: 5434735377307264 (hexadecimal - must decode)
+
+  ✓ Fragment 3: Found in this file (above)
+    Value: 3nm3rg4rF (REVERSED - must reverse)
+
+Parameter retrieval:
+  • 'site' parameter: Check shadow asset metadata in manifest
+  • 'mod' parameter: Check shadow_assets.json entries
+
+Password generation:
+  1. Collect all fragments and decode/reverse as needed
+  2. Obtain site and mod parameters from shadow manifest
+  3. Extract pgen.c source code from admin portal (XSS required)
+  4. Compile pgen.c on your local system
+  5. Execute: ./pgen <frag1> <frag2> <frag3> <site> <mod>
+  6. Hash the output using SHA-256
+  7. Use the hash to authenticate to the terminal
+
+Security Notes:
+  - This legacy backup uses reversed strings for "security"
+  - Modern systems use proper encryption (AES-256)
+  - This backup is retained ONLY for CTF training purposes
+  - Production systems migrated to secure storage 2021-03-15
+
+################################################################################
+
+ADDITIONAL INFORMATION:
+───────────────────────
+
+Migration Status: COMPLETE
+New Auth System: Active as of 2021-03-15
+Legacy System: Deprecated, retained for training
+Shadow Assets: Migrated to /true/admin/shadow_assets.json
+
+CTF Challenge Context:
+  This backup is part of a multi-stage security challenge:
+  1. Information gathering (find all fragment locations)
+  2. Decoding (hex, reversed strings)
+  3. Parameter extraction (shadow manifest exploration)
+  4. XSS exploitation (extract pgen.c from admin portal)
+  5. Local code execution (compile and run pgen.c)
+  6. Password hashing (convert generated password to hash)
+  7. Terminal authentication (login to WASM terminal)
+
+Difficulty: Hard
+Skills Required:
+  - File system exploration
+  - Encoding/decoding (hex, string reversal)
+  - XSS vulnerability exploitation
+  - C programming compilation
+  - Cryptographic hashing
+  - Multi-stage attack chaining
+
+################################################################################
+
+Backup completed: 2021-02-15 16:12:09 UTC
+Backup checksum: 0xDEADBEEF
+Format version: 1.0 (legacy)
+Retention policy: Indefinite
+Status: ARCHIVED
+
+################################################################################
+# END OF BACKUP FILE                                                          #
+################################################################################
