@@ -35,3 +35,4 @@ __pycache__/
 
 # Node modules (if any)
 node_modules/
+wasm-terminal/autumn_leaves_base64.txt

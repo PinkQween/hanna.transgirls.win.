@@ -330,6 +330,19 @@ export class RustTerminal {
             wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
         }
     }
+    /**
+     * Get autocomplete suggestions for the current input
+     * @param {string} input
+     * @returns {string[]}
+     */
+    getAutocompleteSuggestions(input) {
+        const ptr0 = passStringToWasm0(input, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.rustterminal_getAutocompleteSuggestions(this.__wbg_ptr, ptr0, len0);
+        var v2 = getArrayJsValueFromWasm0(ret[0], ret[1]).slice();
+        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+        return v2;
+    }
     constructor() {
         const ret = wasm.rustterminal_new();
         this.__wbg_ptr = ret >>> 0;
@@ -450,8 +463,8 @@ function __wbg_get_imports() {
         const ret = new Error();
         return ret;
     };
-    imports.wbg.__wbg_playAudioFile_1d395dba38b3ca3d = function(arg0, arg1) {
-        const ret = playAudioFile(getStringFromWasm0(arg0, arg1));
+    imports.wbg.__wbg_playMediaUrl_be755e3c4003cc1e = function(arg0, arg1, arg2, arg3) {
+        const ret = playMediaUrl(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
         return ret;
     };
     imports.wbg.__wbg_stack_0ed75d68575b0f3c = function(arg0, arg1) {

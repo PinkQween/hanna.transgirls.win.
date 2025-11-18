@@ -6,6 +6,7 @@ export const rustterminal_addDirectory: (a: number, b: number, c: number) => [nu
 export const rustterminal_addFile: (a: number, b: number, c: number, d: number, e: number) => [number, number];
 export const rustterminal_executeCommand: (a: number, b: number, c: number) => [number, number];
 export const rustterminal_getAuthState: (a: number) => [number, number];
+export const rustterminal_getAutocompleteSuggestions: (a: number, b: number, c: number) => [number, number];
 export const rustterminal_getCurrentDir: (a: number) => [number, number];
 export const rustterminal_getCurrentUsername: (a: number) => [number, number];
 export const rustterminal_getHistory: (a: number) => [number, number];

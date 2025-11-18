@@ -9,9 +9,12 @@ extern "C" {
     #[wasm_bindgen(js_namespace = console)]
     pub fn error(s: &str);
 
-    // Audio playback API
+    // Audio/Video playback API
     #[wasm_bindgen(js_name = playAudioFile)]
     pub fn play_audio_file(path: &str) -> bool;
+
+    #[wasm_bindgen(js_name = playMediaUrl)]
+    pub fn play_media_url(url: &str, display_name: &str) -> bool;
 
     #[wasm_bindgen(js_name = stopAudio)]
     pub fn stop_audio();
@@ -57,6 +60,22 @@ pub fn play_file(path: &str) -> Result<(), String> {
         Ok(())
     } else {
         Err(format!("Failed to play file: {}", path))
+    }
+}
+
+pub fn play_url(url: &str) -> Result<(), String> {
+    if play_media_url(url, "") {
+        Ok(())
+    } else {
+        Err(format!("Failed to play URL: {}", url))
+    }
+}
+
+pub fn play_url_with_name(url: &str, display_name: &str) -> Result<(), String> {
+    if play_media_url(url, display_name) {
+        Ok(())
+    } else {
+        Err(format!("Failed to play URL: {}", url))
     }
 }
 

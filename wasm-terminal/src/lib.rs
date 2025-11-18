@@ -50,6 +50,44 @@ impl RustTerminal {
         }
     }
 
+    /// Parse command line with support for quotes and backslash escaping
+    fn parse_command_line(input: &str) -> Vec<String> {
+        let mut parts = Vec::new();
+        let mut current = String::new();
+        let mut in_quotes = false;
+        let mut escaped = false;
+
+        for c in input.chars() {
+            if escaped {
+                // Add the escaped character literally
+                current.push(c);
+                escaped = false;
+            } else if c == '\\' {
+                // Next character will be escaped
+                escaped = true;
+            } else if c == '"' {
+                // Toggle quote mode
+                in_quotes = !in_quotes;
+            } else if c.is_whitespace() && !in_quotes {
+                // End of current argument (if not in quotes)
+                if !current.is_empty() {
+                    parts.push(current.clone());
+                    current.clear();
+                }
+            } else {
+                // Regular character
+                current.push(c);
+            }
+        }
+
+        // Add the last argument if any
+        if !current.is_empty() {
+            parts.push(current);
+        }
+
+        parts
+    }
+
     /// Execute a command and return the new lines to display
     #[wasm_bindgen(js_name = executeCommand)]
     pub fn execute_command(&mut self, input: String) -> String {
@@ -95,10 +133,8 @@ impl RustTerminal {
                 // Add to history
                 self.history.push(input.clone());
 
-                // Parse command and arguments
-                let parts: Vec<String> = input.trim().split_whitespace()
-                    .map(|s| s.to_string())
-                    .collect();
+                // Parse command and arguments with quote and escape support
+                let parts = Self::parse_command_line(input.trim());
 
                 if parts.is_empty() {
                     return "".to_string();
@@ -249,6 +285,93 @@ impl RustTerminal {
     pub fn read_file(&self, path: String) -> Result<String, JsValue> {
         self.fs.read_file(&path)
             .ok_or_else(|| JsValue::from_str("File not found or is a directory"))
+    }
+
+    /// Get autocomplete suggestions for the current input
+    #[wasm_bindgen(js_name = getAutocompleteSuggestions)]
+    pub fn get_autocomplete_suggestions(&self, input: &str) -> Vec<String> {
+        let parts: Vec<&str> = input.split_whitespace().collect();
+
+        // If no input or empty, return nothing
+        if input.is_empty() {
+            return Vec::new();
+        }
+
+        // If only one word or input ends with space, complete command name
+        if parts.len() == 1 && !input.ends_with(' ') {
+            let prefix = parts[0];
+            let commands = vec![
+                "ls", "cd", "pwd", "cat", "echo", "help", "whoami", "clear",
+                "logout", "exit", "date", "uname", "mkdir", "touch", "rm",
+                "rmdir", "cp", "mv", "find", "grep", "play", "stop", "pause",
+                "resume", "history"
+            ];
+
+            return commands.iter()
+                .filter(|cmd| cmd.starts_with(prefix))
+                .map(|s| s.to_string())
+                .collect();
+        }
+
+        // Otherwise, complete file/directory names
+        let last_part = parts.last().unwrap_or(&"");
+
+        // Determine the directory to search
+        let (dir, prefix) = if last_part.contains('/') {
+            let last_slash = last_part.rfind('/').unwrap();
+            let dir_part = &last_part[..=last_slash];
+            let prefix_part = &last_part[last_slash+1..];
+            (dir_part, prefix_part)
+        } else {
+            ("./", *last_part)
+        };
+
+        // Resolve directory path
+        let search_dir = if dir.starts_with('/') {
+            dir.to_string()
+        } else {
+            self.fs.resolve_path(dir, &self.current_dir)
+        };
+
+        // Get files in directory
+        if let Some(entries) = self.fs.list_directory(&search_dir) {
+            let mut matches: Vec<String> = entries.iter()
+                .filter(|name| name.starts_with(prefix))
+                .map(|name| {
+                    // Escape spaces and special characters in filename
+                    let escaped_name = name.replace(" ", "\\ ")
+                        .replace("(", "\\(")
+                        .replace(")", "\\)");
+
+                    // Reconstruct the full path for the completion
+                    if dir == "./" {
+                        if parts.len() > 1 {
+                            // Multi-word command, return just the filename
+                            escaped_name
+                        } else {
+                            // Single word, return the full command
+                            escaped_name
+                        }
+                    } else {
+                        // Return dir + name
+                        format!("{}{}", dir, escaped_name)
+                    }
+                })
+                .collect();
+
+            // If we're completing a multi-word command, rebuild the full command
+            if parts.len() > 1 {
+                matches = matches.iter().map(|m| {
+                    let mut new_parts = parts[..parts.len()-1].to_vec();
+                    new_parts.push(m);
+                    new_parts.join(" ")
+                }).collect();
+            }
+
+            return matches;
+        }
+
+        Vec::new()
     }
 }
 

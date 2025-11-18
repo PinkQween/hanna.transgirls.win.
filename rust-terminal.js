@@ -9,6 +9,9 @@
 // - Ctrl/Cmd + W: Delete word before cursor
 // - Ctrl/Cmd + C: Cancel current line
 // - Arrow Up/Down: Navigate command history
+// - Arrow Left/Right: Move cursor within current line
+// - Tab: Autocomplete commands and file paths
+// - Delete: Delete character at cursor
 // - Page Up/Down: Scroll through terminal output
 // - Mouse Wheel: Scroll through terminal output
 // - Ctrl/Cmd + V: Paste text
@@ -340,8 +343,19 @@ export class RustCanvasTerminal {
                 e.preventDefault();
                 if (this.cursorX > promptLength) {
                     const lastLine = this.lines[this.lines.length - 1];
-                    this.lines[this.lines.length - 1] = lastLine.slice(0, -1);
+                    const beforeCursor = lastLine.substring(0, this.cursorX - 1);
+                    const afterCursor = lastLine.substring(this.cursorX);
+                    this.lines[this.lines.length - 1] = beforeCursor + afterCursor;
                     this.cursorX--;
+                    this.render();
+                }
+            } else if (e.key === 'Delete') {
+                e.preventDefault();
+                const lastLine = this.lines[this.lines.length - 1];
+                if (this.cursorX < lastLine.length) {
+                    const beforeCursor = lastLine.substring(0, this.cursorX);
+                    const afterCursor = lastLine.substring(this.cursorX + 1);
+                    this.lines[this.lines.length - 1] = beforeCursor + afterCursor;
                     this.render();
                 }
             } else if (e.key === 'ArrowUp') {
@@ -385,9 +399,53 @@ export class RustCanvasTerminal {
                         this.render();
                     }
                 }
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (this.cursorX > promptLength) {
+                    this.cursorX--;
+                    this.render();
+                }
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                const lastLine = this.lines[this.lines.length - 1];
+                if (this.cursorX < lastLine.length) {
+                    this.cursorX++;
+                    this.render();
+                }
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                // Tab autocomplete
+                if (this.wasmTerminal) {
+                    const lastLine = this.lines[this.lines.length - 1];
+                    const input = lastLine.substring(promptLength);
+
+                    // Get autocomplete suggestions from WASM
+                    const suggestions = this.wasmTerminal.getAutocompleteSuggestions(input);
+
+                    if (suggestions && suggestions.length > 0) {
+                        if (suggestions.length === 1) {
+                            // Single match, complete it
+                            const prompt = this.wasmTerminal.getPrompt();
+                            this.lines[this.lines.length - 1] = prompt + suggestions[0];
+                            this.cursorX = this.lines[this.lines.length - 1].length;
+                            this.render();
+                        } else {
+                            // Multiple matches, show them
+                            this.print('');
+                            this.print(suggestions.join('  '));
+                            this.newPrompt();
+                            this.lines[this.lines.length - 1] += input;
+                            this.cursorX = this.lines[this.lines.length - 1].length;
+                            this.render();
+                        }
+                    }
+                }
             } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
                 e.preventDefault();
-                this.lines[this.lines.length - 1] += e.key;
+                const lastLine = this.lines[this.lines.length - 1];
+                const beforeCursor = lastLine.substring(0, this.cursorX);
+                const afterCursor = lastLine.substring(this.cursorX);
+                this.lines[this.lines.length - 1] = beforeCursor + e.key + afterCursor;
                 this.cursorX++;
                 this.render();
             }
@@ -420,7 +478,8 @@ export class RustCanvasTerminal {
         if (lastLineIndex >= startLine && lastLineIndex < endLine) {
             const lastLine = this.lines[lastLineIndex] || '';
             const cursorY = this.padding + (lastLineIndex - startLine) * this.lineHeight;
-            const cursorTextWidth = this.ctx.measureText(lastLine).width;
+            const textBeforeCursor = lastLine.substring(0, this.cursorX);
+            const cursorTextWidth = this.ctx.measureText(textBeforeCursor).width;
 
             // Blinking cursor
             const now = Date.now();

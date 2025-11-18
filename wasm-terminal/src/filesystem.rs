@@ -89,6 +89,18 @@ impl VirtualFileSystem {
             )
         );
 
+        // Music file - exclusive content for elite terminal users
+        // Embedded as base64 to prevent easy theft from GitHub
+        // The play command will decode this and play it
+        const AUTUMN_LEAVES_BASE64: &str = include_str!("../autumn_leaves_base64.txt");
+        projects.children.insert(
+            "Autumn Leaves in Tokyo.mp3".to_string(),
+            FileEntry::new_file(
+                "Autumn Leaves in Tokyo.mp3".to_string(),
+                format!("data:audio/mpeg;base64,{}", AUTUMN_LEAVES_BASE64)
+            )
+        );
+
         // Secret flag file
         secrets.children.insert(
             "flag.txt".to_string(),

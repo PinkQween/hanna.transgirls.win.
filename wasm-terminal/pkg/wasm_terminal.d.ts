@@ -60,6 +60,10 @@ export class RustTerminal {
    * Get current username (if logged in)
    */
   getCurrentUsername(): string;
+  /**
+   * Get autocomplete suggestions for the current input
+   */
+  getAutocompleteSuggestions(input: string): string[];
   constructor();
   /**
    * Check if user is root
@@ -84,6 +88,7 @@ export interface InitOutput {
   readonly rustterminal_addFile: (a: number, b: number, c: number, d: number, e: number) => [number, number];
   readonly rustterminal_executeCommand: (a: number, b: number, c: number) => [number, number];
   readonly rustterminal_getAuthState: (a: number) => [number, number];
+  readonly rustterminal_getAutocompleteSuggestions: (a: number, b: number, c: number) => [number, number];
   readonly rustterminal_getCurrentDir: (a: number) => [number, number];
   readonly rustterminal_getCurrentUsername: (a: number) => [number, number];
   readonly rustterminal_getHistory: (a: number) => [number, number];
